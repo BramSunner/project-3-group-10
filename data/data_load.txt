@@ -1,0 +1,7 @@
+load csv into pandas
+clean it up
+write to sqllite database using orm
+
+engine ... :///border_crossing.sqlite
+
+done
