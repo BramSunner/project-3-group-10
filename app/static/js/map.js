@@ -300,16 +300,7 @@ function createMap(data) {
             click: function (e) {
                 layer = e.target;
 
-                // ... Get data.
-                // Make the trace.
-                // Make the graph data.
-                // Make the graph layout.
-                // Create the plot.
-                // This sounds like an external function to me!
                 makePopupGraph();
-
-                // Note: filter button listener needs to be added.
-                // Note: need to destroy HTML in the graph area because multiple could be rendered in the space over time.
             }
         });
 

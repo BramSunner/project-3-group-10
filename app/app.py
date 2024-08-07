@@ -24,8 +24,8 @@ sql = SQLQueries()
 # ---------------------------------------------------------------------------------------------------------
 # Index/Home.
 @app.route("/")
-def index():
-    return render_template("index.html")
+def home():
+    return render_template("home.html")
 
 # Dashboard.
 @app.route("/dashboard")
@@ -38,9 +38,14 @@ def map():
     return render_template("map.html")
 
 # About Us.
-@app.route("/about-us")
+@app.route("/about_us")
 def about():
-    return render_template("about-us.html")
+    return render_template("about_us.html")
+
+# Works Cited.
+@app.route("/works_cited")
+def works_cited():
+    return render_template("works_cited.html")
 
 
 
@@ -58,6 +63,7 @@ def populatePopup(port_code):
     popup_data = sql.getPopup(int(port_code)) # Port Code must be casted to INT for this to work.
     return jsonify(popup_data)
 
+# ...
 
 
 # ---------------------------------------------------------------------------------------------------------

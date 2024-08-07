@@ -14,7 +14,7 @@ import numpy as np
 
 class SQLQueries():
     def __init__(self):
-        self.engine = create_engine("sqlite:///border_database.sqlite")
+        self.engine = create_engine("sqlite:///../data/border_database.sqlite")
     
     # Functions.
     def getUniquePorts(self):
