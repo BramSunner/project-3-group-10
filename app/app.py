@@ -40,14 +40,16 @@ def map():
 # About Us.
 @app.route("/about-us")
 def about():
-    return render_template("about-us.html")
+    return render_template("about_us.html")
 
 # Works Cited.
 @app.route("/works_cited")
 def works_cited():
     return render_template("works_cited.html")
 
-
+@app.route("/test")
+def test():
+    return render_template("test.html")
 
 # SQL Routes.
 # ---------------------------------------------------------------------------------------------------------
