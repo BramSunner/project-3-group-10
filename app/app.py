@@ -38,9 +38,9 @@ def map():
     return render_template("map.html")
 
 # About Us.
-@app.route("/about_us")
+@app.route("/about-us")
 def about():
-    return render_template("about_us.html")
+    return render_template("about-us.html")
 
 # Works Cited.
 @app.route("/works_cited")
