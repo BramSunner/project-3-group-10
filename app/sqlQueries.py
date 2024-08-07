@@ -15,38 +15,37 @@ import numpy as np
 class SQLQueries():
     def __init__(self):
         self.engine = create_engine("sqlite:///border_database.sqlite")
-
-        def init_base(self):
-            self.Base = automap_base()
-            self.Base.prepare(autoload_with = self.engine)
     
     # Functions.
     def getUniquePorts(self):
-        session = Session(self.engine)
-        Crossings = self.Base.classes.crossings
+        # Get each UNIQUE port for plotting.
+        query = """
+            SELECT *
+            FROM crossings
+            GROUP BY port_code
+            ORDER BY port_code ASC;
+        """
 
-        df = pd.read_sql(
-            session.query(Crossings).group_by(Crossings.port_code).all(),
-            con = self.engine)
-        
+        df = pd.read_sql(text(query), con = self.engine)
         data = df.to_dict(orient = "records")
-        
-        # Close the session.
-        session.close()
 
         return data
+
     
+
     def getPopup(self, port_code):
-        session = Session(self.engine)
-        Crossings = self.Base.classes.crossings
+        # Get an ordered list of all information for a port ordered by year, month, and measure.
+        query = f"""
+            SELECT *
+            FROM crossings
+            WHERE port_code = {port_code}
+            ORDER BY
+                year DESC,
+                month DESC,
+                measure DESC;
+        """
 
-        df = pd.read_sql(
-            session.query(Crossings).filter(Crossings.port_code == port_code).all(),
-            con = self.engine)
-        
+        df = pd.read_sql(text(query), con = self.engine)
         data = df.to_dict(orient = "records")
-
-        # Close the session.
-        session.close()
 
         return data

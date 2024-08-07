@@ -338,6 +338,14 @@ function createMap(data) {
 
 // Initialize.
 function init() {
-    // Grab the data.
+    let url = `/api/v1.0/populate_map`;
+    
+    d3.json(url).then(function(data) {
+        createMap();
+    });
     // Make the map.
 }
+
+
+// Run it.
+init();

@@ -46,12 +46,6 @@ def about():
 
 # SQL Routes.
 # ---------------------------------------------------------------------------------------------------------
-# ... What do we need?
-# In the map, we will want to filter out the data for a specific port of entry.
-# This data could potentially be filtered by ... year, month, type, ... 
-# ok so it would filter out the port code
-# then sort by year, month, transport type.
-
 # Populate the Map.
 @app.route("/api/v1.0/populate_map")
 def populateMap():
