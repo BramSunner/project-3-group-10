@@ -5,3 +5,9 @@
 #map {
     height: 1000px;
 }
+
+.leaflet-popup-content-wrapper {
+    height: 550px;
+    width: 550px;
+    text-align: center;
+}

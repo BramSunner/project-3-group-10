@@ -1,17 +1,19 @@
 
 
 
-
 // Helper Functions.
-
+// Return style options for marker.
 function getMarkerOptions(row) {
+    
+    // Note: ... can dynamically change color of marker.
+    // based on.....?
     let markerOptions = {
-        radius: 10000,
-        fillColor: "black",
+        radius: 7500,
+        fillColor: "#084c61",
         color: "transparent",
         weight: 1.5,
         opacity: 1,
-        fillOpacity: 0.75
+        fillOpacity: 0.5
     };
 
     return markerOptions;
@@ -22,11 +24,56 @@ function createPopupHTML(row) {
     return `<div id="popup-graph-${row.port_code}"></div>`;
 }
 
+// Convert numeric months to English months for easier reading.
+function convertMonth(month) {
+    // let months = {
+    //     1: "Jan",
+    //     2: "Feb",
+    //     3: "Mar",
+    //     4: "Apr",
+    //     5: "May",
+    //     6: "Jun",
+    //     7: "Jul",
+    //     8: "Aug",
+    //     9: "Sep",
+    //     10: "Oct",
+    //     11: "Nov",
+    //     12: "Dec"
+    // };
+
+    let months = {
+        1: "January",
+        2: "February",
+        3: "March",
+        4: "April",
+        5: "May",
+        6: "June",
+        7: "July",
+        8: "August",
+        9: "September",
+        10: "October",
+        11: "November",
+        12: "December"
+    };
+
+    return months[month];
+}
+
+// Format Sunburst chart labels for easier reading.
+function formatMeasure(measure) {
+    if (typeof measure === "string") {
+        measure = measure.replaceAll(' ', '<br>');
+    }
+
+    return measure;
+}
+
+// Generate Sunburst chart for a popup.
 function createSunburst(row) {
-    // Create a Sunburst chart for each popup.
+    // Grab all data relating to the targeted port.
     let url = `/api/v1.0/populate_popup/${row.port_code}`;
     d3.json(url).then(function(data) {
-        // Declare a variable to store items while looping.
+        // A variable to remember iterations.
         let iter = {
             "port": data[0].port_code,
             "year": {
@@ -43,14 +90,13 @@ function createSunburst(row) {
             },
         };
 
-        // Declare variables to store our data.
-        // Note: initialized with proper starting values for the graph.
+        // Variables to store Sunburst chart data.
+        // Note: initialized with first index prepared.
         let ids = [`${data[0].port_code}`];
-        let labels = [`${data[0].port_name}, ${data[0].state}<br>Port Code: ${data[0].port_code}`];
+        let labels = [`${data[0].port_name},<br>${data[0].state}<br>Port Code: ${data[0].port_code}`];
         let parents = [""];
         let values = [0];
         
-        // Begin our loop.
         for (let i = 0; i < data.length; i++) {
             let r = data[i];
 
@@ -64,6 +110,13 @@ function createSunburst(row) {
 
                 iter["year"]["index"] = (values.push(r.value) - 1);
                 values[0] += r.value;
+
+                // Reset iteration to avoid miscounts.
+                iter["month"]["id"] = null;
+                iter["month"]["index"] = null;
+                iter["measure"]["id"] = null;
+                iter["measure"]["index"] = null;
+
             } else {
                 values[iter["year"]["index"]] += r.value;
                 values[0] += r.value;
@@ -74,11 +127,15 @@ function createSunburst(row) {
                 iter["month"]["id"] = r.month;
 
                 ids.push(`${iter["year"]["id"]}-${r.month}`);
-                labels.push(`${r.month}`);
+                labels.push(`${convertMonth(r.month)}`);
                 parents.push(`${iter["year"]["id"]}`);
 
                 iter["month"]["index"] = (values.push(r.value) - 1);
                 values[0] += r.value;
+
+                // Reset iteratiosn to avoid miscounts.
+                iter["measure"]["id"] = null;
+                iter["measure"]["index"] = null;
             } else {
                 values[iter["month"]["index"]] += r.value;
                 values[0] += r.value;
@@ -89,7 +146,7 @@ function createSunburst(row) {
                 iter["measure"]["id"] = r.measure;
 
                 ids.push(`${iter["year"]["id"]}-${iter["month"]["id"]}-${r.measure}`);
-                labels.push(`${r.measure}`);
+                labels.push(`${formatMeasure(r.measure)}`);
                 parents.push(`${iter["year"]["id"]}-${iter["month"]["id"]}`);
 
                 iter["measure"]["index"] = (values.push(r.value) - 1);
@@ -100,22 +157,50 @@ function createSunburst(row) {
             }
         };
 
+        // Modified values to make Sunburst chart use entire circumference.
+        let modValues = JSON.parse(JSON.stringify(values));
+        modValues[0] = 0;
+
+        // Normalized values for use with colormaps.
+        let cValues = values.map(function(num) {
+            num = (num - (Math.min.apply(Math, values))) / ((Math.max.apply(Math, values)) - (Math.min.apply(Math, values)));
+            return num;
+        });
+
         let sunburstData = [{
             type: "sunburst",
             ids: ids,
             labels: labels,
             parents: parents,
-            values: values,
-            outsidetextfont: {size: 20, color: "#377eb8"},
+            values: modValues,
+            texttemplate: "%{label}",
+            insidetextorientation: "horizontal",  
+            hovertext: values,
+            hovertemplate: "%{label}<br>%{hovertext:,} Crossings<extra></extra>",
             leaf: {opacity: 0.5},
-            marker: {line: {width: 2}},
-            branchvalues: 'total'
+            marker: {
+                line: {width: 2},
+                autocolorscale: false,
+                cauto: true,
+                cmin: 0,
+                cmax: 1,
+                colors: cValues,
+                colorscale: [
+                    [0, "#084c61"],
+                    [0.005, "#ffc857"],
+                    [1, "#ffffff"],
+                ],
+            },
+            branchvalues: "relative",
+            sort: false,
+            rotation: 0,
+            maxdepth: 2,
         }];
 
         let layout = {
-            margin: {l: 0, r: 0, b: 0, t: 0},
+            margin: {l: 5, r: 5, b: 5, t: 5},
             height: 500,
-            width: 500
+            width: 500,
         };
 
         Plotly.newPlot(`popup-graph-${row.port_code}`, sunburstData, layout);
@@ -123,9 +208,10 @@ function createSunburst(row) {
 }
 
 
+
 // Create the Map.
 function createMap(data) {
-    // Create the base layers.
+    // Base Layers.
     let street = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
         attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
     });
@@ -139,28 +225,25 @@ function createMap(data) {
         Topography: topo
     };
 
-    // Create the data layer.
-    // Create a layer group for the markers.
+    // Data Layer.
+    // A layer group for the markers.
     let portLayer = L.layerGroup();
 
-    // Loop thru the data and create each point.
+    // Loop through the data and create each marker.
     for (let i = 0; i < data.length; i++) {
-        // Isolate the row.
         let row = data[i];
 
-        // Grab the coordinates and make a point.
         let lat = row.latitude;
         let lng = row.longitude;
         let latlng = [lat, lng];
 
-        // Make a marker.
         let marker = L.circle(latlng, getMarkerOptions(row));
 
-        // Make the popup for the marker.
+        // Generate a popup for the marker.
         let popup = createPopupHTML(row);
         marker.bindPopup(popup);
         
-        // Define the custom events for the marker.
+        // Define event listeners for the marker.
         marker.on({
             // "Select" a marker being hovered.
             mouseover: function (e) {
@@ -176,10 +259,9 @@ function createMap(data) {
                     fillOpacity: 0.5
                 });
             },
-            // Populate a graph (and table.. below map area?) for the port upon selecting it.
+            // Populate the popup with a Sunburst chart on click.
             click: function (e) {
                 layer = e.target;
-
                 createSunburst(row);
             }
         });
@@ -191,14 +273,14 @@ function createMap(data) {
         Ports: portLayer
     };
 
-    // Initialize the map.
+    // Initialize Map.
     let myMap = L.map("map", {
         center: [37.0902, -95.7129],
-        zoom: 4,
+        zoom: 5,
         layers: [street, portLayer]
     });
 
-    // Create the layer control.
+    // Layer Control.
     L.control.layers(baseLayers, dataLayers).addTo(myMap);
 }
 
@@ -210,6 +292,7 @@ function init() {
         createMap(data);
     });
 }
+
 
 
 // Run it.
