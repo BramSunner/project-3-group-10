@@ -179,9 +179,8 @@ function createSunburst(row) {
             hovertemplate: "%{label}<br>%{hovertext:,} Crossings<extra></extra>",
             leaf: {opacity: 0.5},
             marker: {
-                line: {width: 2},
+                line: {width: 1},
                 autocolorscale: false,
-                cauto: true,
                 cmin: 0,
                 cmax: 1,
                 colors: cValues,
