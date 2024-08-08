@@ -1,0 +1,18 @@
+#map {
+    height: 88vh;
+    margin-left: 2vh;
+    margin-right: 2vh;
+    margin-top: 0vh;
+    margin-bottom: 2vh;
+}
+
+.leaflet-popup-content-wrapper {
+    height: 550px;
+    width: 550px;
+    text-align: center;
+}
+
+/* styles.css */
+.bio {
+    margin-left: 20px; /* Adjust the value to move content further or closer to the right */
+  }
