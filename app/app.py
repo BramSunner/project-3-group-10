@@ -1,6 +1,6 @@
 # Dependencies.
 # Flask.
-from flask import Flask, jsonify, render_template
+from flask import Flask, jsonify, render_template, request
 
 # Other.
 # ...
@@ -53,17 +53,49 @@ def test():
 
 # SQL Routes.
 # ---------------------------------------------------------------------------------------------------------
-# Populate the Map.
-@app.route("/api/v1.0/populate_map")
-def populateMap():
-    map_data = sql.getUniquePorts()
-    return jsonify(map_data)
+# API Request for Data.
+@app.route("/api/v1.0/requestData")
+def requestData():
+    # Process the request.
+    # Select.
+    select = None
+    if 'select' in request.args:
+        select = list()
+        if ',' in request.args['select']:
+            select = request.args['select'].split(',')
+        else:
+            select.append(request.args['select'])
 
-# Populate a Popup.
-@app.route("/api/v1.0/populate_popup/<port_code>")
-def populatePopup(port_code):
-    popup_data = sql.getPopup(int(port_code)) # Port Code must be casted to INT for this to work.
-    return jsonify(popup_data)
+    # Where.
+    where = None
+    if 'where' in request.args:
+        where = list()
+        if ',' in request.args['where']:
+            where = request.args['where'].split(',')
+        else:
+            where.append(request.args['where'])
+
+    # Order.
+    order = None
+    if 'order_by' in request.args:
+        order = list()
+        if ',' in request.args['order_by']:
+            order = [x.split(':') for x in request.args['order_by'].split(',')]
+        else:
+            order.append(request.args['order_by'].split(':'))
+
+    # Group.
+    group = None
+    if 'group_by' in request.args:
+        group = list()
+        if ',' in request.args['group_by']:
+            group = request.args['group_by'].split(',')
+        else:
+            group.append(request.args['group_by'])
+
+    data = sql.requestData(select = select, where = where, order = order, group = group)
+
+    return data
 
 # ...
 

@@ -13,7 +13,7 @@ function getMarkerOptions(row) {
         color: "transparent",
         weight: 1.5,
         opacity: 1,
-        fillOpacity: 0.5
+        fillOpacity: 0.75
     };
 
     return markerOptions;
@@ -70,8 +70,9 @@ function formatMeasure(measure) {
 
 // Generate Sunburst chart for a popup.
 function createSunburst(row) {
-    // Grab all data relating to the targeted port.
-    let url = `/api/v1.0/populate_popup/${row.port_code}`;
+    // URL for the request. Using our API structure.
+    let url = `/api/v1.0/requestData?where=port_code=${row.port_code}&order_by=year:DESC,month:DESC,measure:DESC`
+
     d3.json(url).then(function(data) {
         // A variable to remember iterations.
         let iter = {
@@ -185,8 +186,10 @@ function createSunburst(row) {
                 cmax: 1,
                 colors: cValues,
                 colorscale: [
-                    [0, "#084c61"],
-                    [0.005, "#ffc857"],
+                    [0, "#323031"],
+                    [0.0005, "#084c61"],
+                    [0.005, "#177e89"],
+                    [0.025, "#ffc857"],
                     [1, "#ffffff"],
                 ],
             },
@@ -255,7 +258,7 @@ function createMap(data) {
             mouseout: function (e) {
                 layer = e.target;
                 layer.setStyle({
-                    fillOpacity: 0.5
+                    fillOpacity: 0.75
                 });
             },
             // Populate the popup with a Sunburst chart on click.
@@ -285,8 +288,8 @@ function createMap(data) {
 
 // Initialize.
 function init() {
-    let url = `/api/v1.0/populate_map`;
-    
+    let url = `/api/v1.0/requestData?group_by=port_code&order_by=port_code:ASC`;
+
     d3.json(url).then(function(data) {
         createMap(data);
     });

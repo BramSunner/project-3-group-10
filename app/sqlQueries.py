@@ -17,35 +17,73 @@ class SQLQueries():
         self.engine = create_engine(f"sqlite:///border_database.sqlite")
     
     # Functions.
-    def getUniquePorts(self):
-        # Get each UNIQUE port for plotting.
-        query = """
-            SELECT *
-            FROM crossings
-            GROUP BY port_code
-            ORDER BY port_code ASC;
-        """
+    # API Request.
+    def requestData(
+            self, 
+            select = None, 
+            where = None, 
+            order = None, 
+            group = None):  
+        
+        # Base.
+        q = ""
 
-        df = pd.read_sql(text(query), con = self.engine)
-        data = df.to_dict(orient = "records")
+        # Select.
+        if select != None:
+            q_select = "SELECT "
+            for n, i in enumerate(select):
+                if n == 0:
+                    q_select += f"{i}"
+                else:
+                    q_select += f", {i}"
 
-        return data
+            q_select += " FROM crossings"
+            q += q_select
 
-    
+        else:
+            q += "SELECT * FROM crossings"
 
-    def getPopup(self, port_code):
-        # Get an ordered list of all information for a port ordered by year, month, and measure.
-        query = f"""
-            SELECT *
-            FROM crossings
-            WHERE port_code = {port_code}
-            ORDER BY
-                year DESC,
-                month DESC,
-                measure DESC;
-        """
+        # Where.
+        if where != None:
+            q_where = " WHERE "
+            for n, i in enumerate(where):
 
-        df = pd.read_sql(text(query), con = self.engine)
+                if n == 0:
+                    q_where += f"{i}"
+                else:
+                    q_where += f", {i}"
+
+            q += q_where
+
+        # Group.
+        if group != None:
+            q_group = " GROUP BY "
+            for n, i in enumerate(group):
+                if n == 0:
+                    q_group += f"{i}"
+                else:
+                    q_group += f", {i}"
+
+            q += q_group
+
+        # Order.
+        if order != None:
+            q_order = " ORDER BY "
+            for n, i in enumerate(order):
+                if n == 0:
+                    q_order += f"{i[0]} {i[1]}"
+                else:
+                    q_order += f", {i[0]} {i[1]}"
+
+            q += q_order
+
+        # Finish the request.
+        q += ";"
+
+        print(q)
+
+        # Make the request.
+        df = pd.read_sql(text(q), con = self.engine)
         data = df.to_dict(orient = "records")
 
         return data

@@ -16,6 +16,7 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
     <script src="https://d3js.org/d3.v7.min.js"></script>
     <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 
 <body>
@@ -42,11 +43,73 @@
             </ul>
         </div>
     </nav>
-    <!-- add spacing -->
+
     <br/>
 
     <!-- Dashboard -->
-     <div class="container-fluid">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="row">
+                <!-- Line Chart -->
+                <div class="col-md-6">
+                    <div class="card">
+                        <div class="card-body">
+                             <div id="line-chart"></div>
+                        </div>
+                        <div class="card-footer">
+                            <div id="line-chart-filter">
+                                <!-- ... -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Donut Chart -->
+                <div class="col-md-6">
+                    <div class="card">
+                        <div class="card-body text-center">
+                            <div id="donut-chart-container">
+                                <div id="donut-chart"></div>
+                            </div>
+                        </div>
+                        <div class="card-footer text-center">
+                            <div class="donut-chart-filter">
+                                <label for="donut-chart-port_name-filter">Port Name</label>
+                                <select id="donut-chart-port_name-filter">
+                                    <option selected>All</option>
+                                </select>
+                                <label for="donut-chart-state-filter">State</label>
+                                <select id="donut-chart-state-filter">
+                                    <option selected>All</option>
+                                </select>
+                                <label for="donut-chart-port_code-filter">Port Code</label>
+                                <select id="donut-chart-port_code-filter">
+                                    <option selected>All</option>
+                                </select>
+                                <label for="donut-chart-month-filter">Month</label>
+                                <select id="donut-chart-month-filter">
+                                    <option selected>All</option>
+                                </select>
+                                <label for="donut-chart-year-filter">Year</label>
+                                <select id="donut-chart-year-filter">
+                                    <option selected>All</option>
+                                </select>
+                                <button id="donut-chart-filter-button">Filter</button>
+                                <!-- <select id="donut-chart-filter-more"></select> -->
+                                <!-- ... -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <br>
+            <div class="row">
+                <div class="col-md-12">
+                </div>
+            </div>
+        </div>
+    </div>
+
+     <!-- <div class="container-fluid">
         <div class="row">
             <div class="col-md-12 text-center">
                 <h1>Border Crossing Entries</h1>
@@ -85,7 +148,7 @@
         <hr/>
         <div class="row">
             <div class="col-md-12 text-center">
-                <!-- Launch Data -->
+                Launch Data
                 <h4>Launches by Launchpad</h4>
                 <table id="data_table" class="table table-striped table-hover">
                     <thead>
@@ -106,8 +169,8 @@
      </div>
 
      <br/>
-     <br/>
+     <br/> -->
 
-    <script src="./static/js/app.js"></script>
+    <script src="./static/js/dashboard.js"></script>
 </body>
 </html>
