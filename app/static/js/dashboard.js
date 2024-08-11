@@ -1,247 +1,459 @@
-function renderFilters(){
-    // Donut Chart.
-    // port_name
+
+
+
+
+
+// Page initialization.
+function setupPage() {
+    populateFilterOptions();
+    setButtons();
+}
+
+// Populate each filter with appropriate data.
+function populateFilterOptions(){
+    // Port Name.
     url = `/api/v1.0/requestData?select=port_name&group_by=port_name&order_by=port_name:ASC`
     d3.json(url).then(function(data) {
         for (i = 0; i < data.length; i++) {
-            d3.select("#donut-chart-port_name-filter")
-            .append('option')
-            .text(`${data[i].port_name}`);
+            d3.select("#filter-port_name")
+                .append('option')
+                .text(`${data[i].port_name}`);
         }
     });
 
-    // state
+    // State.
     url = `/api/v1.0/requestData?select=state&group_by=state&order_by=state:ASC`
     d3.json(url).then(function(data) {
         for (i = 0; i < data.length; i++) {
-            d3.select("#donut-chart-state-filter")
-            .append('option')
-            .text(`${data[i].state}`);
+            d3.select("#filter-state")
+                .append('option')
+                .text(`${data[i].state}`);
         }
     });
 
-    // port_code
+    // Port Code.
     url = `/api/v1.0/requestData?select=port_code&group_by=port_code&order_by=port_code:ASC`
     d3.json(url).then(function(data) {
         for (i = 0; i < data.length; i++) {
-            d3.select("#donut-chart-port_code-filter")
-            .append('option')
-            .text(`${data[i].port_code}`);
+            d3.select("#filter-port_code")
+                .append('option')
+                .text(`${data[i].port_code}`);
         }
     });
 
-    // month
+    // Border.
+    url = `/api/v1.0/requestData?select=border&group_by=border&order_by=border:ASC`
+    d3.json(url).then(function(data) {
+        for (i = 0; i < data.length; i++) {
+            d3.select("#filter-border")
+                .append('option')
+                .text(`${data[i].border}`);
+        }
+    });
+
+    // Measure.
+    url = `/api/v1.0/requestData?select=measure&group_by=measure&order_by=measure:ASC`
+    d3.json(url).then(function(data) {
+        for (i = 0; i < data.length; i++) {
+            d3.select("#filter-measure")
+                .append('option')
+                .text(`${data[i].measure}`);
+        }
+    });
+
+    // Month.
     url = `/api/v1.0/requestData?select=month&group_by=month&order_by=month:ASC`
     d3.json(url).then(function(data) {
         for (i = 0; i < data.length; i++) {
-            d3.select("#donut-chart-month-filter")
-            .append('option')
-            .text(`${data[i].month}`);
+            d3.select("#filter-month-1")
+                .append('option')
+                .text(`${data[i].month}`);
 
+            d3.select("#filter-month-2")
+                .append('option')
+                .text(`${data[i].month}`);
         }
     });
 
-    // year
+    // Year.
     url = `/api/v1.0/requestData?select=year&group_by=year&order_by=year:ASC`
     d3.json(url).then(function(data) {
         for (i = 0; i < data.length; i++) {
-            d3.select("#donut-chart-year-filter")
-            .append('option')
-            .text(`${data[i].year}`);
+            d3.select("#filter-year-1")
+                .append('option')
+                .text(`${data[i].year}`);
+
+            d3.select("#filter-year-2")
+                .append('option')
+                .text(`${data[i].year}`);
         }
     });
 }
 
-function renderDonutChart() {
-    d3.json(filterDonutChart()).then(function(data){
-        console.log(data);
-        let values = [];
-        let labels = [];
+// Link button events to JS functions.
+function setButtons() {
+    d3.select("#btn-line-re")
+        .on("click", updateLineChart)
+        .on("mouseover", event => event.target.style.backgroundColor = "white")
+        .on("mouseout", event => event.target.style.backgroundColor = "transparent");
 
-        for (i = 0; i < data.length; i++) {
-            row = data[i];
+    d3.select("#btn-donut-re")
+        .on("click", updateDonutChart)
+        .on("mouseover", event => event.target.style.backgroundColor = "white")
+        .on("mouseout", event => event.target.style.backgroundColor = "transparent");
 
-            values.push(row['value']);
-            labels.push(row['measure'].replaceAll(' ', '<br>'));
-        }
+    d3.select("#btn-table-re")
+        .on("click", updateTable)
+        .on("mouseover", event => event.target.style.backgroundColor = "white")
+        .on("mouseout", event => event.target.style.backgroundColor = "transparent");
 
-        let donutData = [{
-            values: values,
-            labels: labels,
-            domain: {row: 0, column: 0},
-            name: 'Transport<br>Types',
-            hoverinfo: 'label+percent+value+name',
-            hole: .5,
-            type: 'pie',
-            marker: {
-                colors: [
-                    "#323031", 
-                    "#084c61", 
-                    "#177e89", 
-                    "#ffc857",
-                    "#db3a34", 
-                    "#323031", 
-                    "#084c61", 
-                    "#177e89", 
-                    "#ffc857",
-                    "#db3a34",
-                    "#323031", 
-                    "#084c61"
-                ],
-                line: {
-                    color: "#ffffff",
-                    width: 1,
-                },
-            },
-          }];
-          
-        let layout = {
-            title: 'Modes of Transportation Across the Border',
-            height: 800,
-            // width: 600,
-            showlegend: false,
-            grid: {rows: 1, columns: 1}
-        };
+
+    // Group Buttons.
+    // Note: commented out because the functionality didn't work as intended.
+    // But... didn't want to get rid of the code. To see if I could make it work later.
+    // Set value to "false".
+    // d3.selectAll(".btn-grp")
+    //     .property("value", false);
+
+    // Handle further interaction.
+    // d3.selectAll(".btn-grp")
+    // .on("click", function(event) {
+    //     if (event.target.value === "true") {
+    //         event.target.value = false;
+    //         event.target.style.backgroundColor = "#ffffff";
+    //         event.target.style.color = "#000000";
+    //     } else if (event.target.value === "false") {
+    //         event.target.value = true;
+    //         event.target.style.backgroundColor = "#177e89";
+    //         event.target.style.color = "#ffffff";
+    //     }
+    // })
+    // .on("mouseover", event => event.target.style.borderColor = "#ffc857")
+    // .on("mouseout", event => event.target.style.borderColor = "#ffffff");
+
+    // Order Buttons.
+    // Set value to "false".
+    d3.selectAll(".btn-filter")
+        .property("value", false);
+
+    // Handle further interaction.
+    d3.selectAll(".btn-filter")
+    .on("click", function(event) {
+        let id = event.target.id.split('-');
         
-        d3.select("#donut-chart").html("");
-        Plotly.newPlot('donut-chart', donutData, layout);
-    });
+        if (event.target.value === "true") {
+            event.target.value = false;
+            event.target.style.backgroundColor = "#ffffff";
+            event.target.style.color = "#000000";
+        } else if (event.target.value === "false") {
+            event.target.value = true;
+            event.target.style.backgroundColor = "#177e89";
+            event.target.style.color = "#ffffff";
+        }
+
+        d3.select(`#btn-${id[1]}-${((id[2] === "asc") ? "desc" : "asc")}`)
+            .property("value", false)
+            .style("background", "#ffffff")
+            .style("color", "#000000");
+    })
+    .on("mouseover", event => event.target.style.borderColor = "#ffc857")
+    .on("mouseout", event => event.target.style.borderColor = "#ffffff");
 }
 
-function filterDonutChart() {
-    // Build the API request.
-    let where = ""
+// Handle API Request for each visualization.
+function filterData(type = "none") {
+    // Variable to hold clauses.
+    let clauses = [];
+
+    // Where.
     let w_list = [];
-
-    if (d3.select("#donut-chart-port_name-filter").property("value") != "All") {
-        w_list.push(`port_name='${d3.select("#donut-chart-port_name-filter").property("value")}'`);
-    }
-
-    if (d3.select("#donut-chart-state-filter").property("value") != "All") {
-        w_list.push(`state='${d3.select("#donut-chart-state-filter").property("value")}'`);
-    }
-
-    if (d3.select("#donut-chart-port_code-filter").property("value") != "All") {
-        w_list.push(`port_code=${d3.select("#donut-chart-port_code-filter").property("value")}`);
-    }
-
-    if (d3.select("#donut-chart-month-filter").property("value") != "All") {
-        w_list.push(`month=${d3.select("#donut-chart-month-filter").property("value")}`);
-    }
-
-    if (d3.select("#donut-chart-year-filter").property("value") != "All") {
-        w_list.push(`year=${d3.select("#donut-chart-year-filter").property("value")}`);
+    let w_sel = d3.selectAll(".filter-sel")["_groups"][0];
+    for (let i = 0; i < w_sel.length; i++) {
+        // Is this filter unused?
+        if ((w_sel[i]["value"] != "All") && (w_sel[i]["value"] != "")) {
+            let id = w_sel[i]["id"].split('-');
+            
+            // Special case for String select.
+            if (["port_name", "state", "border", "measure"].some(param => id.includes(param))) {
+                if ((type === "donut") && (id.includes("measure"))) {} 
+                else {
+                    w_list.push(
+                        `${id[1]}` +
+                        `=` + 
+                        `'${w_sel[i]["value"]}'`
+                    );
+                }
+            }
+            // Special case for Month & Year.
+            else if (["month", "year"].some(param => id.includes(param))) {
+                w_list.push(
+                    `${id[1]}` +
+                    `${d3.select(`#filter-${id[1]}-cmp-${id[2]}`).property("value")}` +
+                    `${w_sel[i]["value"]}`
+                );
+            }
+            // Special case for numeric input.
+            else if (["value", "latitude", "longitude"].some(param => id.includes(param))) {
+                if (d3.select(`#filter-${id[1]}-${id[3]}`).property("value") != "") {
+                // Special case for negative numbers.
+                    if (d3.select(`#filter-${id[1]}-${id[3]}`).property("value").includes("-")) {
+                        w_list.push(
+                            `CAST(REPLACE(REPLACE(${id[1]}, '(', '-'), ')', '') AS DECIMAL(10,2))` +
+                            `${w_sel[i]["value"]}` +
+                            `${d3.select(`#filter-${id[1]}-${id[3]}`).property("value")}`
+                        );
+                    // Regular case. 
+                    } else {
+                        w_list.push(
+                            `${id[1]}` +
+                            `${w_sel[i]["value"]}` +
+                            `${d3.select(`#filter-${id[1]}-${id[3]}`).property("value")}`
+                        );
+                    }
+                }
+            }
+            // Regular case for numeric select.
+            else {
+                w_list.push(
+                    `${id[1]}` +
+                    `=` + 
+                    `${w_sel[i]["value"]}`
+                );
+            }
+        }
     }
 
     // Check if selections are all 'All'.
-    if (w_list != undefined || w_list.length != 0) {
-        for (i = 0; i < w_list.length; i++) {
+    if (w_list != undefined && w_list.length != 0) {
+        let where = "";
+
+        for (let i = 0; i < w_list.length; i++) {
             if (i === 0) {
                 where = where + w_list[i];
             } else {
                 where = where + ' AND ' + w_list[i];
             }
         }
+
+        clauses.push(where);
     }
     
-    if (where != "") {
-        return `/api/v1.0/requestData?select=measure,SUM(value) AS 'value'&where=${where}&group_by=measure&order_by=value:DESC`;
+    // Group.
+    // Note: commented out because the functionality didn't work as intended.
+    // But... didn't want to get rid of the code. To see if I could make it work later.
+    // let g_list = [];
+    // let g_btns = d3.selectAll(".btn-grp")["_groups"][0];
+    // for (let i = 0; i < g_btns.length; i++) {
+    //     if (g_btns[i]["value"] === "true") {
+    //         g_list.push(g_btns[i]["id"].split('-')[1]);
+    //     }
+    // }
+
+    // if (g_list != undefined && g_list.length != 0) {
+    //     clauses.push("group_by");
+    //     let group = "";
+
+    //     for (let i = 0; i < g_list.length; i++) {
+    //         if (i === 0) {
+    //             group = group + g_list[i];
+    //         } else {
+    //             group = group + ',' + g_list[i];
+    //         }
+    //     }
+
+    //     clauses.push(group);
+    // }
+
+    // Order.
+    let o_list = [];
+    let o_btns = d3.selectAll(".btn-filter")["_groups"][0];
+    for (let i = 0; i < o_btns.length; i++) {
+        // console.log(o_btns[i]["value"]);
+        // console.log(o_btns[i]["id"]);
+        if (o_btns[i]["value"] === "true") {
+            o_list.push(
+                `${o_btns[i]["id"].split('-')[1]}:` +
+                `${o_btns[i]["id"].split('-')[2]}`
+            );
+        }
     }
 
-    return `/api/v1.0/requestData?select=measure,SUM(value) AS 'value'&group_by=measure&order_by=value:DESC`;
+    if (o_list != undefined && o_list.length != 0) {
+        clauses.push("order_by");
+        let order = "";
+
+        for (let i = 0; i < o_list.length; i++) {
+            if (i === 0) {
+                order = order + o_list[i];
+            } else {
+                order = order + ',' + o_list[i];
+            }
+        }
+
+        clauses.push(order);
+    }
+    
+    // Add Line Chart in.
+    if (type === "line") {}
+
+    if (type === "donut") {
+        if ((clauses != undefined) && (clauses.length != 0)) {
+            let phrase = "";
+
+            for (let i = 0; i < clauses.length; i+=2) {
+                if (clauses[i] === "where") {
+                    phrase += `&${clauses[i]}=${clauses[i+1]}`;
+                }
+            }
+
+            console.log("DONUT");
+            console.log(phrase);
+
+            return `/api/v1.0/requestData` +
+                `?select=measure,SUM(value) AS 'value'` +
+                `&group_by=measure` + 
+                `&order_by=value:DESC` +
+                phrase;
+        } else {
+            return `/api/v1.0/requestData` +
+                `?select=measure,SUM(value) AS 'value'` +
+                `&group_by=measure` + 
+                `&order_by=value:DESC`;
+        }
+    }
+
+    if (type === "table") {
+        if ((clauses != undefined) && (clauses.length != 0)) {
+            let phrase = "";
+
+            for (let i = 0; i < clauses.length; i+=2) {
+                phrase += `&${clauses[i]}=${clauses[i+1]}`;
+            }
+
+            console.log("TABLE");
+            console.log(phrase);
+
+            return `/api/v1.0/requestData` +
+                `?limit=10000` +
+                phrase;
+        } else {
+            return `/api/v1.0/requestData` +
+                `?limit=10000`;
+        }
+    }
+
+    return `/api/v1.0/requestData`;
 }
 
+function renderLineChart(data) {
+    console.log("Render the line chart.");
+}
+
+function renderDonutChart(data) {
+    let values = [];
+    let labels = [];
+
+    for (i = 0; i < data.length; i++) {
+        row = data[i];
+
+        if (row['value'] != 0) {
+            values.push(row['value']);
+            labels.push(row['measure'].replaceAll(' ', '<br>'));
+        }
+    }
+
+    let donutData = [{
+        values: values,
+        labels: labels,
+        domain: {row: 0, column: 0},
+        name: 'Transport<br>Types',
+        hoverinfo: 'label+percent+value+name',
+        hole: .5,
+        type: 'pie',
+        marker: {
+            colors: [
+                "#323031", 
+                "#084c61", 
+                "#177e89", 
+                "#ffc857",
+                "#db3a34", 
+                "#323031", 
+                "#084c61", 
+                "#177e89", 
+                "#ffc857",
+                "#db3a34",
+                "#323031", 
+                "#084c61"
+            ],
+            line: {
+                color: "#ffffff",
+                width: 1,
+            },
+        },
+    }];
+    
+    let layout = {
+        title: '',
+        height: 800,
+        // width: 600,
+        showlegend: false,
+        grid: {rows: 1, columns: 1}
+    };
+    
+    d3.select("#donut-chart").html("");
+    Plotly.newPlot('donut-chart', donutData, layout);
+}
+
+// Table Visualization.
+function renderTable(data) {
+    let body = d3.select("#table-body").html("");
+
+    for (i = 0; i < data.length; i++) {
+        row = data[i];
+
+        let tr = body.append("tr")
+            .attr("class", (((i % 2) === 0) ? "table-active" : "table-secondary"));
+
+        tr.append("th")
+            .property("scope", "row")
+            .text(i);
+
+        tr.append("td").text(row["port_name"]);
+        tr.append("td").text(row["state"]);
+        tr.append("td").text(row["port_code"]);
+        tr.append("td").text(row["border"]);
+        tr.append("td").text(row["measure"]);
+        tr.append("td").text(row["value"]);
+        tr.append("td").text(row["month"]);
+        tr.append("td").text(row["year"]);
+        tr.append("td").text(row["latitude"]);
+        tr.append("td").text(row["longitude"]);
+    }
+}
+
+// Update Visualizations.
+// Calls filterData for API request.
+// Renders visualiation using that data.
+function updateLineChart() {
+    d3.json(filterData(type = "line")).then(data => renderLineChart(data));
+}
+
+function updateDonutChart() {
+    d3.json(filterData(type = "donut")).then(data => renderDonutChart(data));
+}
+
+function updateTable() {
+    d3.json(filterData(type = "table")).then(data => renderTable(data));
+}
+
+// Initialize the page.
+// Setup all buttons and filters.
+// Render all visualizations with default filter settings.
 function init() {
-    // have to get all the filters going.
-    // render the first look at everything.
-    // ... yeah
-
-    // Populate the filters.
-    renderFilters();
-    renderDonutChart();
-    
-   
+    setupPage();
+    updateLineChart();
+    updateDonutChart();
+    updateTable();
 }
-
-d3.select("#donut-chart-filter-button").on("click", renderDonutChart);
 
 init();
-// // ... for this we can only have one type of thing...
-// // ... i.e., no mixing months or years or transit types
-
-
-
-// const myChart = document.querySelector(".donut-chart");
-// const ul = document.querySelector(".transportation-stats .details ul");
-
-// new Chart(myChart, {
-//     type: "doughnut",
-//     data: {
-//         labels: chartData.labels,
-//         datasets: [
-//             {
-//                 label: "Transportation Popularity",
-//                 data: chartData.data,
-//                 backgroundColor: chartData.colors
-//             },
-//         ],
-//     },
-//     options: {
-//         borderWidth: 10,
-//         borderRadius: 2,
-//         hoverBorderWidth: 0,
-//         plugins: {
-//             legend: {
-//                 display: false,
-//             },
-//         },
-//     },
-// });
-
-// const populateUl = () => {
-//     chartData.labels.forEach((l, i) => {
-//         let li = document.createElement("li");
-//         li.innerHTML = `${l}: <span class='percentage'>${chartData.data[i]}%</span>`;
-//         ul.appendChild(li);
-//     });
-// };
-
-// populateUl();
-
-
-
-
-// Populate Line Chart, Donut Chart, and Table on page load.
-// Filters for each can redraw individual elements.
-
-// <!DOCTYPE html>
-// <html lang="en">
-// <head>
-//     <meta charset="UTF-8">
-//     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-//     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-//     <title>Document</title>
-//     <link rel="preconnect" href="https://fonts.googleapis.com">
-//     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-//     <link 
-//         href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;700&display=swap" 
-//         rel="stylesheet">
-//     <link rel="stylesheet" href="style.css">
-// </head>
-// <body>
-
-//     <h2 class="chart-heading">Transportation Across the Border</h2>
-//     <div class="transportation-stats">
-//       <div class="chart-container">
-//         <canvas class="my-chart"></canvas>
-//       </div>
-
-//         <div class="details">
-//            <ul></ul> 
-//         </div>
-//     </div>
-
-//     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-//     <script src="app.js"></script>
-//   </body>
-// </html>

@@ -93,7 +93,15 @@ def requestData():
         else:
             group.append(request.args['group_by'])
 
-    data = sql.requestData(select = select, where = where, order = order, group = group)
+    # Limit.
+    limit = None
+    if 'limit' in request.args:
+        try:
+            limit = int(request.args['limit'])
+        except ValueError as e:
+            print(f"{e} occurred while adding limit to query.")
+
+    data = sql.requestData(select = select, where = where, order = order, group = group, limit = limit)
 
     return data
 

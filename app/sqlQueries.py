@@ -23,7 +23,8 @@ class SQLQueries():
             select = None, 
             where = None, 
             order = None, 
-            group = None):  
+            group = None,
+            limit = None):  
         
         # Base.
         q = ""
@@ -76,6 +77,10 @@ class SQLQueries():
                     q_order += f", {i[0]} {i[1]}"
 
             q += q_order
+
+        # Limit.
+        if limit != None:
+            q += f" LIMIT {limit}"
 
         # Finish the request.
         q += ";"
