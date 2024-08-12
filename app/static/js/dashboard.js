@@ -350,6 +350,153 @@ function filterData(type = "none") {
 
 function renderLineChart(data) {
     console.log("Render the line chart.");
+    let bus_passengers = [];
+    let buses = [];
+    let pedestrians = [];
+    let personal_vehicle_passengers = [];
+    let personal_vehicles = [];
+    let rail_containers_empty = [];
+    let rail_containers_loaded =[];
+    let train_passengers = [];
+    let trains = [];
+    let truck_containers_empty = [];
+    let truck_containers_loaded = [];
+    let trucks = [];
+    
+    for (i = 0; i < data.length; i++) {
+        row = data[i];
+        months = [1,2,3,4,5,6,7,8,9,10,11,12];
+        if (row['measure'] === 'Bus Passengers') {
+            bus_passengers.push(row['value']);
+        }
+        else if (row['measure'] === 'Buses'){
+            buses.push(row['value']);
+        }
+        else if (row['measure'] === 'Pedestrians') {
+            pedestrians.push(row['value']);
+        }
+        else if (row['measure'] === 'Personal Vehicle Passengers'){
+            personal_vehicle_passengers.push(row['value']);
+        }
+        else if (row['measure'] === 'Personal Vehicles') {
+            personal_vehicles.push(row['value']);
+        }
+        else if (row['measure'] === 'Rail Containers Empty') {
+            rail_containers_empty.push(row['value']);
+        }
+        else if (row['measure'] === 'Rail Containers Loaded'){
+            rail_containers_loaded.push(row['value']);
+        }
+        else if (row['measure'] === 'Train Passengers') {
+            train_passengers.push(row['value']);
+        }
+        else if (row['measure'] === 'Trains') {
+            trains.push(row['value']);
+        }
+        else if (row['measure'] === 'Truck Containers Emptys') {
+            truck_containers_empty.push(row['value']);
+        }
+        else if (row['measure'] === 'Truck Containers Loaded') {
+            truck_containers_loaded.push(row['value']);
+        }
+        else {
+            trucks.push(row['value']);
+        }
+    }
+    let tr1 = {
+        x: months,
+        y: bus_passengers,
+        mode:'line',
+        line : {color:"#323031", width: 2},
+        name : 'Bus Passengers'
+    }
+    let tr2 = {
+        x: months,
+        y: buses,
+        mode:'line',
+        line : {color:"#084c61", width: 2},
+        name : 'Buses'
+    }  
+    let tr3 = {
+        x: months,
+        y: pedestrians,
+        mode:'line',
+        line : {color:"#177e89", width: 2},
+        name : 'Pedestrians'
+    }  
+    let tr4 = {
+        x: months,
+        y: personal_vehicle_passengers,
+        mode:'line',
+        line : {color:"#ffc857", width: 2},
+        name : 'Personal Vehicle Passengers'
+    }  
+    let tr5 = {
+        x: months,
+        y: personal_vehicles,
+        mode:'line',
+        line : {color:"#db3a34", width: 2},
+        name : 'Personal Vehicles'
+    }  
+    let tr6 = {
+        x: months,
+        y: rail_containers_empty,
+        mode:'line',
+        line : {color:"#323031", width: 2},
+        name : 'Rail Containers Empty'
+    }  
+    let tr7 = {
+        x: months,
+        y: rail_containers_loaded,
+        mode:'line',
+        line : {color:"#084c61", width: 2},
+        name : 'Rail Containers Loaded'
+    }  
+    let tr8 = {
+        x: months,
+        y: train_passengers,
+        mode:'line',
+        line : {color:"#177e89", width: 2},
+        name : 'Train Passengers'
+    }  
+    let tr9 = {
+        x: months,
+        y: trains,
+        mode:'line',
+        line : {color:"#ffc857", width: 2},
+        name : 'Trains'
+    }  
+    let tr10 = {
+        x: months,
+        y: truck_containers_empty,
+        mode:'line',
+        line : {color:"#db3a34", width: 2},
+        name : 'Truck Containers Empty'
+    }  
+    let tr11 = {
+        x: months,
+        y: truck_containers_loaded,
+        mode:'line',
+        line : {color:"#084c61", width: 2},
+        name : 'Truck Containers Loaded'
+    }  
+    let tr12 = {
+        x: months,
+        y: trucks,
+        mode:'line',
+        line : {color:"#177e89", width: 2},
+        name : 'Trucks'
+    }  
+    line_data = [tr1,tr2,tr3,tr4,tr5,tr6,tr7,tr8,tr9,tr10,tr11,tr12]
+    
+    let layout = {
+        title: 'All Crossing Measurements by Year and Month',
+        width: 600,
+        height: 1000
+    };
+
+    Plotly.newPlot('line-chart', line_data, layout);
+    
 }
 
 function renderDonutChart(data) {
