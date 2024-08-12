@@ -1,8 +1,8 @@
 #map {
-    height: 88vh;
+    height: 78vh;
     margin-left: 2vh;
     margin-right: 2vh;
-    margin-top: 0vh;
+    margin-top: 2vh;
     margin-bottom: 2vh;
 }
 
@@ -16,11 +16,7 @@
     margin-left: 20px; /* Adjust the value to move content further or closer to the right */
   }
 
-.toggle-button {
-    border-width: .5px;
-    border-radius: 20px;
-    background-color: transparent;
-}
+/* Buttons */
 
 .update-button {
     border-width: .5px;
@@ -30,26 +26,62 @@
 
 .btn-filter {
     font-size: medium;
-    color: black;
+    color: #000000;
     background-color: white;
-    border-color: white;
+    border-color: #000000;
+    border-width: 1px;
 }
 
-table {
-    border-collapse: collapse;
-    border: 1px solid #000000;
+/* Filters. */
+
+#filter-menu {
+    width: fit-content;
+    position: sticky;
+    top: 0;
+    left: 0;
 }
-    
-table td {
+
+#filter-menu-header {
+    text-align: center;
+    margin-top: 15px;
+    margin-bottom: 10px;
+}
+
+#filter-menu-header-relief {
+    margin-top: 0px;
+}
+
+.filter-item {
+    padding-left: 10px;
+    padding-right: 10px;
+    position: fixed;
+    top:0;
+    left:0;
+}
+
+#filter-menu-filler {
+    min-height: 0;
+    flex-grow: 1;
+}
+
+/* Table */
+
+table {
     border: 1px solid #000000;
+
 }
 
 table th {
-    border-bottom: 1px solid #000000;
+    text-align: center;
+    max-width: fit-content;
+    font-weight: 200;
+    position: sticky;
+    top: 0;
 }
 
-.card-filter {
-    min-height: 14vh;
+table td {
+    border: 1px solid #000000;
+    max-width: fit-content;
 }
 
 /*  Note: commented out because the functionality didn't work as intended.

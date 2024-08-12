@@ -157,7 +157,7 @@ function setButtons() {
             .style("color", "#000000");
     })
     .on("mouseover", event => event.target.style.borderColor = "#ffc857")
-    .on("mouseout", event => event.target.style.borderColor = "#ffffff");
+    .on("mouseout", event => event.target.style.borderColor = "#000000");
 }
 
 // Handle API Request for each visualization.
@@ -166,6 +166,7 @@ function filterData(type = "none") {
     let clauses = [];
 
     // Where.
+    // Get all 'where' options.
     let w_list = [];
     let w_sel = d3.selectAll(".filter-sel")["_groups"][0];
     for (let i = 0; i < w_sel.length; i++) {
@@ -223,8 +224,9 @@ function filterData(type = "none") {
         }
     }
 
-    // Check if selections are all 'All'.
+    // Construct 'where' clause.
     if (w_list != undefined && w_list.length != 0) {
+        clauses.push("where");
         let where = "";
 
         for (let i = 0; i < w_list.length; i++) {
@@ -265,11 +267,10 @@ function filterData(type = "none") {
     // }
 
     // Order.
+    // Get all 'order' options.
     let o_list = [];
     let o_btns = d3.selectAll(".btn-filter")["_groups"][0];
     for (let i = 0; i < o_btns.length; i++) {
-        // console.log(o_btns[i]["value"]);
-        // console.log(o_btns[i]["id"]);
         if (o_btns[i]["value"] === "true") {
             o_list.push(
                 `${o_btns[i]["id"].split('-')[1]}:` +
@@ -278,6 +279,7 @@ function filterData(type = "none") {
         }
     }
 
+    // Construct 'order' clause.
     if (o_list != undefined && o_list.length != 0) {
         clauses.push("order_by");
         let order = "";
@@ -293,13 +295,14 @@ function filterData(type = "none") {
         clauses.push(order);
     }
     
-    // Add Line Chart in.
+    // Add Line Chart in. ************************************************************************************************ <-------------------------------------------
     if (type === "line") {}
 
     if (type === "donut") {
         if ((clauses != undefined) && (clauses.length != 0)) {
             let phrase = "";
-
+            console.log("CLAUSES");
+            console.log(clauses);
             for (let i = 0; i < clauses.length; i+=2) {
                 if (clauses[i] === "where") {
                     phrase += `&${clauses[i]}=${clauses[i+1]}`;
@@ -395,12 +398,11 @@ function renderDonutChart(data) {
     let layout = {
         title: '',
         height: 800,
-        // width: 600,
         showlegend: false,
         grid: {rows: 1, columns: 1}
     };
     
-    d3.select("#donut-chart").html("");
+    d3.select("#donut-chart").html(""); // Delete old visualization.
     Plotly.newPlot('donut-chart', donutData, layout);
 }
 
@@ -414,10 +416,7 @@ function renderTable(data) {
         let tr = body.append("tr")
             .attr("class", (((i % 2) === 0) ? "table-active" : "table-secondary"));
 
-        tr.append("th")
-            .property("scope", "row")
-            .text(i);
-
+        tr.append("td").text(i);
         tr.append("td").text(row["port_name"]);
         tr.append("td").text(row["state"]);
         tr.append("td").text(row["port_code"]);
@@ -429,6 +428,11 @@ function renderTable(data) {
         tr.append("td").text(row["latitude"]);
         tr.append("td").text(row["longitude"]);
     }
+
+    // DataTables.
+    let table = new DataTable('#table', {
+        // option
+    });
 }
 
 // Update Visualizations.
