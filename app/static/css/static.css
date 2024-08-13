@@ -95,6 +95,16 @@ table th {
     text-align: center;
 }
 
+/* Home */
+.card-custom-green {
+    background-color: #177E89;
+    color: white;
+}
+.card-custom-blue {
+    background-color: #084c61;
+    color: white;
+}
+
 table td {
     border: 1px solid #000000;
 }
