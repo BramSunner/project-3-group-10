@@ -1,8 +1,3 @@
-
-
-
-
-
 // Page initialization.
 function setupPage() {
     populateFilterOptions();
@@ -92,74 +87,17 @@ function populateFilterOptions(){
 
 // Link button events to JS functions.
 function setButtons() {
-    d3.select("#btn-line-re")
-        .on("click", updateLineChart)
-        .on("mouseover", event => event.target.style.backgroundColor = "white")
-        .on("mouseout", event => event.target.style.backgroundColor = "transparent");
+    d3.select("#btn-line-re").on("click", updateLineChart);
+    d3.select("#btn-donut-re").on("click", updateDonutChart);
+    d3.select("#btn-table-re").on("click", updateTable);
+    d3.select("#filter-button").on("click", updateAll);
+}
 
-    d3.select("#btn-donut-re")
-        .on("click", updateDonutChart)
-        .on("mouseover", event => event.target.style.backgroundColor = "white")
-        .on("mouseout", event => event.target.style.backgroundColor = "transparent");
-
-    d3.select("#btn-table-re")
-        .on("click", updateTable)
-        .on("mouseover", event => event.target.style.backgroundColor = "white")
-        .on("mouseout", event => event.target.style.backgroundColor = "transparent");
-
-    d3.select("#filter-button")
-        .on("click", updateAll);
-
-    // Group Buttons.
-    // Note: commented out because the functionality didn't work as intended.
-    // But... didn't want to get rid of the code. To see if I could make it work later.
-    // Set value to "false".
-    // d3.selectAll(".btn-grp")
-    //     .property("value", false);
-
-    // Handle further interaction.
-    // d3.selectAll(".btn-grp")
-    // .on("click", function(event) {
-    //     if (event.target.value === "true") {
-    //         event.target.value = false;
-    //         event.target.style.backgroundColor = "#ffffff";
-    //         event.target.style.color = "#000000";
-    //     } else if (event.target.value === "false") {
-    //         event.target.value = true;
-    //         event.target.style.backgroundColor = "#177e89";
-    //         event.target.style.color = "#ffffff";
-    //     }
-    // })
-    // .on("mouseover", event => event.target.style.borderColor = "#ffc857")
-    // .on("mouseout", event => event.target.style.borderColor = "#ffffff");
-
-    // Order Buttons.
-    // Set value to "false".
-    d3.selectAll(".btn-filter")
-        .property("value", false);
-
-    // Handle further interaction.
-    d3.selectAll(".btn-filter")
-    .on("click", function(event) {
-        let id = event.target.id.split('-');
-        
-        if (event.target.value === "true") {
-            event.target.value = false;
-            event.target.style.backgroundColor = "#ffffff";
-            event.target.style.color = "#000000";
-        } else if (event.target.value === "false") {
-            event.target.value = true;
-            event.target.style.backgroundColor = "#177e89";
-            event.target.style.color = "#ffffff";
-        }
-
-        d3.select(`#btn-${id[1]}-${((id[2] === "asc") ? "desc" : "asc")}`)
-            .property("value", false)
-            .style("background", "#ffffff")
-            .style("color", "#000000");
-    })
-    .on("mouseover", event => event.target.style.borderColor = "#ffc857")
-    .on("mouseout", event => event.target.style.borderColor = "#000000");
+// Dynamic coloring for Line Chart.
+function chooseAColor(index) {
+    colors = ["#ffc857", "#323031", "#084c61", "#db3a34", "#177e89"];
+    while (index > 5) { index -= 5; }
+    return colors[index];
 }
 
 // Handle API Request for each visualization.
@@ -242,62 +180,7 @@ function filterData(type = "none") {
         clauses.push(where);
     }
     
-    // Group.
-    // Note: commented out because the functionality didn't work as intended.
-    // But... didn't want to get rid of the code. To see if I could make it work later.
-    // let g_list = [];
-    // let g_btns = d3.selectAll(".btn-grp")["_groups"][0];
-    // for (let i = 0; i < g_btns.length; i++) {
-    //     if (g_btns[i]["value"] === "true") {
-    //         g_list.push(g_btns[i]["id"].split('-')[1]);
-    //     }
-    // }
-
-    // if (g_list != undefined && g_list.length != 0) {
-    //     clauses.push("group_by");
-    //     let group = "";
-
-    //     for (let i = 0; i < g_list.length; i++) {
-    //         if (i === 0) {
-    //             group = group + g_list[i];
-    //         } else {
-    //             group = group + ',' + g_list[i];
-    //         }
-    //     }
-
-    //     clauses.push(group);
-    // }
-
-    // Order.
-    // Get all 'order' options.
-    let o_list = [];
-    let o_btns = d3.selectAll(".btn-filter")["_groups"][0];
-    for (let i = 0; i < o_btns.length; i++) {
-        if (o_btns[i]["value"] === "true") {
-            o_list.push(
-                `${o_btns[i]["id"].split('-')[1]}:` +
-                `${o_btns[i]["id"].split('-')[2]}`
-            );
-        }
-    }
-
-    // Construct 'order' clause.
-    if (o_list != undefined && o_list.length != 0) {
-        clauses.push("order_by");
-        let order = "";
-
-        for (let i = 0; i < o_list.length; i++) {
-            if (i === 0) {
-                order = order + o_list[i];
-            } else {
-                order = order + ',' + o_list[i];
-            }
-        }
-
-        clauses.push(order);
-    }
-    
-    // Add Line Chart in. ************************************************************************************************ <-------------------------------------------
+    // Line Chart.
     if (type === "line") {
         if ((clauses != undefined) && (clauses.length != 0)) {
             let phrase = "";
@@ -308,14 +191,17 @@ function filterData(type = "none") {
             }
 
             return `/api/v1.0/requestData` +
-                `?select=measure,value,month` +
+                `?select=measure,value,month,year,port_code,port_name,state` +
+                `&order_by=year:ASC,month:ASC,port_code:DESC,measure:DESC` +
                 phrase;
         } else {
             return `/api/v1.0/requestData` +
-                `?select=measure,value,month`;
+                `?select=measure,value,month,year,port_code,port_name,state` +
+                `&order_by=year:ASC,month:ASC,port_code:DESC,measure:DESC`;
         }
     }
 
+    // Donut Chart.
     if (type === "donut") {
         if ((clauses != undefined) && (clauses.length != 0)) {
             let phrase = "";
@@ -338,6 +224,7 @@ function filterData(type = "none") {
         }
     }
 
+    // Table.
     if (type === "table") {
         if ((clauses != undefined) && (clauses.length != 0)) {
             let phrase = "";
@@ -357,157 +244,166 @@ function filterData(type = "none") {
     return `/api/v1.0/requestData`;
 }
 
+// Line Chart Visualization.
 function renderLineChart(data) {
-    console.log("Render the line chart.");
-    let bus_passengers = [];
-    let buses = [];
-    let pedestrians = [];
-    let personal_vehicle_passengers = [];
-    let personal_vehicles = [];
-    let rail_containers_empty = [];
-    let rail_containers_loaded =[];
-    let train_passengers = [];
-    let trains = [];
-    let truck_containers_empty = [];
-    let truck_containers_loaded = [];
-    let trucks = [];
-    
-    for (i = 0; i < data.length; i++) {
+    // Find Range of chart.
+    let range = [];
+
+    // Only 1 Year.
+    if ((data[data.length-1].year - data[0].year) === 0) {
+        for (let m = data[0].month; m < (data[data.length-1].month + 1); m++) {
+            range.push(`${data[0].year}-${m}-1`);
+        }
+    }
+    // Only 2 Years.
+    else if ((data[data.length-1].year - data[0].year) === 1) {
+        for (let m = data[0].month; m < 13; m++) {
+            range.push(`${data[0].year}-${m}-1`);
+        }
+
+        for (let m = 1; (m < data[data.length-1].month + 1); m++) {
+            range.push(`${data[data.length-1].year}-${m}-1`);
+        }
+    }
+    // More than 2 Years.
+    else {
+        // First Year. 
+        for (let m = data[0].month; m < 13; m++) {
+            range.push(`${data[0].year}-${m}-1`);
+        }
+
+        // Middle Year(s).
+        for (let y = (data[0].year + 1); y < data[data.length-1].year; y++) {
+            for (let m = 1; m < 13; m++) {
+                range.push(`${y}-${m}-1`)
+            }
+        }
+
+        // Last Year.
+        for (let m = 1; m < (data[data.length-1].month + 1); m++) {
+            range.push(`${data[data.length-1].year}-${m}-1`);
+        }
+    }
+
+    // Get Data.
+    let lineData = [];
+    let seenPort = [];
+    let seenMeasure = [];
+    let groupByPort = d3.select('#filter-line-port_code').property("checked");
+    // Loop through data.
+    for (let i = 0; i < data.length; i++) {
         row = data[i];
-        months = [1,2,3,4,5,6,7,8,9,10,11,12];
-        if (row['measure'] === 'Bus Passengers') {
-            bus_passengers.push(row['value']);
+
+        // Grouping Port. 
+        if (groupByPort) {
+            // Line Data has something in it.
+            if ((seenPort != undefined) && (seenPort.length > 0)) {
+                // Port has been created prior.
+                if (seenPort.includes(row.port_code)) {
+                    lineData[seenPort.indexOf(row.port_code)].y[range.indexOf(`${row.year}-${row.month}-1`)] = row.value;
+                } 
+                // Port has not been seen yet.
+                else {
+                    // Create new trace.
+                    seenPort.push(row.port_code);
+                    lineData.push({
+                        x: range,
+                        y: new Array(range.length).fill(0),
+                        mode: 'line',
+                        line: {
+                            color: chooseAColor(seenPort.indexOf(row.port_code)), // Figure out dynamic coloring.
+                            width: 2,
+                        },
+                        name: `${row.port_code}`,
+                        showlegend: true,
+                    });
+
+                    lineData[seenPort.indexOf(row.port_code)].y[range.indexOf(`${row.year}-${row.month}-1`)] = row.value;
+                }
+            } 
+            // Line Data has nothing in it.
+            else {
+                // Create new trace.
+                seenPort.push(row.port_code);
+                lineData.push({
+                    x: range,
+                    y: new Array(range.length).fill(0),
+                    mode: 'line',
+                    line: {
+                        color: chooseAColor(seenPort.indexOf(row.port_code)), // Figure out dynamic coloring.
+                        width: 2,
+                    },
+                    name: `${row.port_code}`,
+                    showlegend: true,
+                });
+
+                lineData[seenPort.indexOf(row.port_code)].y[range.indexOf(`${row.year}-${row.month}-1`)] = row.value;
+            }
         }
-        else if (row['measure'] === 'Buses'){
-            buses.push(row['value']);
-        }
-        else if (row['measure'] === 'Pedestrians') {
-            pedestrians.push(row['value']);
-        }
-        else if (row['measure'] === 'Personal Vehicle Passengers'){
-            personal_vehicle_passengers.push(row['value']);
-        }
-        else if (row['measure'] === 'Personal Vehicles') {
-            personal_vehicles.push(row['value']);
-        }
-        else if (row['measure'] === 'Rail Containers Empty') {
-            rail_containers_empty.push(row['value']);
-        }
-        else if (row['measure'] === 'Rail Containers Loaded'){
-            rail_containers_loaded.push(row['value']);
-        }
-        else if (row['measure'] === 'Train Passengers') {
-            train_passengers.push(row['value']);
-        }
-        else if (row['measure'] === 'Trains') {
-            trains.push(row['value']);
-        }
-        else if (row['measure'] === 'Truck Containers Emptys') {
-            truck_containers_empty.push(row['value']);
-        }
-        else if (row['measure'] === 'Truck Containers Loaded') {
-            truck_containers_loaded.push(row['value']);
-        }
+
+        // Grouping Measure.
         else {
-            trucks.push(row['value']);
+            // Line Data has something in it.
+            if ((seenMeasure != undefined) && (seenMeasure.length > 0)) {
+                // Port has been created prior.
+                if (seenMeasure.includes(row.measure)) {
+                    lineData[seenMeasure.indexOf(row.measure)].y[range.indexOf(`${row.year}-${row.month}-1`)] = row.value;
+                } 
+                // Port has not been seen yet.
+                else {
+                    // Create new trace.
+                    seenMeasure.push(row.measure);
+                    lineData.push({
+                        x: range,
+                        y: new Array(range.length).fill(0),
+                        mode: 'line',
+                        line: {
+                            color: chooseAColor(seenMeasure.indexOf(row.measure)), // Figure out dynamic coloring.
+                            width: 2,
+                        },
+                        name: row.measure.split(' ').join('<br>'),
+                        showlegend: true,
+                    });
+
+                    lineData[seenMeasure.indexOf(row.measure)].y[range.indexOf(`${row.year}-${row.month}-1`)] = row.value;
+                }
+            } 
+            // Line Data has nothing in it.
+            else {
+                // Create new trace.
+                seenMeasure.push(row.measure);
+                lineData.push({
+                    x: range,
+                    y: new Array(range.length).fill(0),
+                    mode: 'line',
+                    line: {
+                        color: chooseAColor(seenMeasure.indexOf(row.measure)), // Figure out dynamic coloring. 
+                        width: 2,
+                    },
+                    name: row.measure.split(' ').join('<br>'),
+                    showlegend: true,
+                });
+
+                lineData[seenMeasure.indexOf(row.measure)].y[range.indexOf(`${row.year}-${row.month}-1`)] = row.value;
+            }          
         }
     }
-    let tr1 = {
-        x: months,
-        y: bus_passengers,
-        mode:'line',
-        line : {color:"#323031", width: 2},
-        name : 'Bus Passengers'
-    }
-    let tr2 = {
-        x: months,
-        y: buses,
-        mode:'line',
-        line : {color:"#084c61", width: 2},
-        name : 'Buses'
-    }  
-    let tr3 = {
-        x: months,
-        y: pedestrians,
-        mode:'line',
-        line : {color:"#177e89", width: 2},
-        name : 'Pedestrians'
-    }  
-    let tr4 = {
-        x: months,
-        y: personal_vehicle_passengers,
-        mode:'line',
-        line : {color:"#ffc857", width: 2},
-        name : 'Personal Vehicle Passengers'
-    }  
-    let tr5 = {
-        x: months,
-        y: personal_vehicles,
-        mode:'line',
-        line : {color:"#db3a34", width: 2},
-        name : 'Personal Vehicles'
-    }  
-    let tr6 = {
-        x: months,
-        y: rail_containers_empty,
-        mode:'line',
-        line : {color:"#323031", width: 2},
-        name : 'Rail Containers Empty'
-    }  
-    let tr7 = {
-        x: months,
-        y: rail_containers_loaded,
-        mode:'line',
-        line : {color:"#084c61", width: 2},
-        name : 'Rail Containers Loaded'
-    }  
-    let tr8 = {
-        x: months,
-        y: train_passengers,
-        mode:'line',
-        line : {color:"#177e89", width: 2},
-        name : 'Train Passengers'
-    }  
-    let tr9 = {
-        x: months,
-        y: trains,
-        mode:'line',
-        line : {color:"#ffc857", width: 2},
-        name : 'Trains'
-    }  
-    let tr10 = {
-        x: months,
-        y: truck_containers_empty,
-        mode:'line',
-        line : {color:"#db3a34", width: 2},
-        name : 'Truck Containers Empty'
-    }  
-    let tr11 = {
-        x: months,
-        y: truck_containers_loaded,
-        mode:'line',
-        line : {color:"#084c61", width: 2},
-        name : 'Truck Containers Loaded'
-    }  
-    let tr12 = {
-        x: months,
-        y: trucks,
-        mode:'line',
-        line : {color:"#177e89", width: 2},
-        name : 'Trucks'
-    }  
-    line_data = [tr1,tr2,tr3,tr4,tr5,tr6,tr7,tr8,tr9,tr10,tr11,tr12]
-    
+
     let layout = {
         title: '',
         height: 1000,
-        xaxis: {title: 'Month'},
-        // yaxis: {title: 'Count'}
+        xaxis: {
+            title: 'Date (Year, Month)'
+        },
+        yaxis: {
+            title: 'Count'
+        },
     };
 
-    Plotly.newPlot('line-chart', line_data, layout);
+    Plotly.newPlot('line-chart', lineData, layout);
 }
 
+// Donut Chart Visualization.
 function renderDonutChart(data) {
     let values = [];
     let labels = [];
@@ -599,6 +495,7 @@ function updateAll() {
     updateDonutChart();
     updateTable();
 }
+
 function updateLineChart() {
     d3.json(filterData(type = "line")).then(data => renderLineChart(data));
 }

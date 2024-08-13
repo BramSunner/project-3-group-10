@@ -1,5 +1,5 @@
 #map {
-    height: 78vh;
+    height: 74vh;
     margin-left: 2vh;
     margin-right: 2vh;
     margin-top: 2vh;
@@ -22,14 +22,6 @@
     border-width: .5px;
     border-radius: 20px;
     background-color: transparent;
-}
-
-.btn-filter {
-    font-size: smaller;
-    color: #000000;
-    background-color: white;
-    border-color: #000000;
-    border-width: 1px;
 }
 
 /* Filters. */
@@ -106,12 +98,3 @@ table th {
 table td {
     border: 1px solid #000000;
 }
-
-/*  Note: commented out because the functionality didn't work as intended.
-    But... didn't want to get rid of the code. To see if I could make it work later.
-.btn-grp {
-    font-size: medium;
-    color: black;
-    background-color: white;
-    border-color: white;
-} */

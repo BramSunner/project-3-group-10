@@ -23,7 +23,7 @@
             <a class="navbar-brand" href="/">Project 3</a>
             <ul class="navbar-nav me-auto">
                 <li class="nav-item">
-                    <a class="nav-link active" href="/">Home</a>
+                    <a class="nav-link" href="/">Home</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="/dashboard">Dashboard</a>
@@ -32,7 +32,7 @@
                     <a class="nav-link" href="/map">Map</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="/about_us">About Us</a>
+                    <a class="nav-link active" href="/about_us">About Us</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="/works_cited">Works Cited</a>
@@ -42,72 +42,126 @@
     </nav>
     <!-- JS for About Us -->
     <body>
-        <style>
-            h1 {
-                text-align: center;
-            }
-            .bio {
-                 margin-left: 50px;
-            }
-        </style>
-        <header>
-            <h1>Meet the Team</h1>
-        </header>
-        <main>
-            <section class="bio">
-                <img src="static/images/ethan.jpg" alt="Profile Picture" class="profile-pic"
-                     width="100"
-                     height="100" />
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="card bg-secondary border-dark" style="padding: 10px; margin: 10px;">
+                        <div class="card-header bg-secondary">
+                            <h2 style="text-align: left;">
+                                Meet The Team
+                            </h2>
+                        </div>
+                    </div>
+                </div>
+            </div>
 
-                <div class="bio-text">
-                    <h3>Ethan Tebbe </h3>
-                    <p>My name is Ethan Tebbe. I'm a student of data analytics and data science and I am always looking for ways to expand my knowledge of field. I have spent a few years with Python, and I am getting acquainted to JavaScript, HTML, CSS, SQL, and noSQL.
-                       When I'm not coding, I enjoy playing videogames, board games, and card games, and exploring new places. I do enjoy a good nap, as well. I enjoy travelling the world and learning more about each place that I visit.
-                       I hold a degree in Spanish Language and Literature from Oakland University, but I am looking to break into the field of data analytics.</p>
-                    <p>Email: ethanmbasura@gmail.com</p>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="card bg-secondary border-dark" style="padding: 10px; margin: 10px;">
+                        <div class="card-header">
+                            <h4 style="text-align: left;">Ethan Tebbe</h4>
+                        </div>
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-md-1">
+                                    <img src="static/images/ethan.jpg" alt="Profile Picture" class="profile-pic" width="100" height="100"/>
+                                </div>
+                                <div class="col-md-11">
+                                    <p>
+                                        My name is Ethan Tebbe. I'm a student of data analytics and data science, and I am always looking for ways to expand my knowledge of the field. I have spent a few years with Python, and I am getting acquainted to JavaScript, HTML, CSS, SQL, and noSQL.<br>
+                                        When I'm not coding, I enjoy playing videogames, board games, and card games, and exploring new places. I do enjoy a good nap, as well. I enjoy travelling the world and learning more about each place that I visit.<br>
+                                        I hold a degree in Spanish Language and Literature from Oakland University, but I am looking to break into the field of data analytics.
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-footer">
+                            <p>Email: ethanmbasura@gmail.com</p>
+                        </div>
+                    </div>
                 </div>
-            </section>
-            <section class="bio">
-                <img src="static/images/gavin.png" alt="Profile Picture" class="profile-pic"
-                     width="100"
-                     height="100" />
-                    
-                <div class="bio-text">
-                    <h3>Gavin Plemon</h3>
-                    <p>I am Gavin Plemon, I started my data science path with the data science boot camp I am currently taking, after having previously been at Michigan State University.
-                       I have experience with Python from my time at MSU but have been excited to add more coding languages to my repertoire such as SQL and JavaScript through these classes.
-                       Outside of the work and class setting I enjoy downhill skiing, playing video games, and taking my dog on hikes through the various parks in our area. 
-                       Currently I work as a bartender and server at a private golf club but I am looking to pursue a career in the data analytics field in the future.</p>
-                    <p>Email: gavplem00@gmail.com</p>
-                </div>
-            </section>
-            <section class="bio">
-                <img src="static/images/Leon.jpg" alt="Profile Picture" class="profile-pic"
-                     width="100"
-                     height="100" />
+            </div>
 
-                <div class="bio-text">
-                    <h3>Leon Harris</h3>
-                    <p>My name is Leon Harris, I'm a student in a data analytics bootcamp gaining experience with various technologies including HTML, CSS, and JavaScript. 
-                       When I'm not coding, I enjoy family time, playing/watching sports, and I also love to travel.</p>
-                    <p>Email: harris.leon07@gmail.com</p>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="card bg-secondary border-dark" style="padding: 10px; margin: 10px;">
+                        <div class="card-header">
+                            <h4 style="text-align: left;">Gavin Plemon</h4>
+                        </div>
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-md-1">
+                                    <img src="static/images/gavin.png" alt="Profile Picture" class="profile-pic" width="100" height="100"/>
+                                </div>
+                                <div class="col-md-11">
+                                    <p>
+                                        I am Gavin Plemon, I started my data science path with the data science boot camp I am currently taking, after having previously been at Michigan State University.<br>
+                                        I have experience with Python from my time at MSU but have been excited to add more coding languages to my repertoire such as SQL and JavaScript through these classes.<br>
+                                        Outside of the work and class setting I enjoy downhill skiing, playing video games, and taking my dog on hikes through the various parks in our area.<br>
+                                        Currently I work as a bartender and server at a private golf club but I am looking to pursue a career in the data analytics field in the future.
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-footer">
+                            <p>Email: gavplem00@gmail.com</p>
+                        </div>
+                    </div>
                 </div>
-            </section>
-            <section class="bio">
-                <img src="static/images/sarah_pic.jpg" alt="Profile Picture" class="profile-pic"
-                     width="100"
-                     height="100" />
-            
-                <div class="bio-text">
-                    <h3>Sarah Ruth</h3>
-                    <p>My name is Sarah Ruth, and I'm a student in the Data Analytics Bootcamp. I have been learning new technologies including Python, HTML, CSS, and JavaScript.
-                       I enjoy socializing with my family/friends, swimming, traveling, and exploring different craft projects.
-                       I have a Master's Degree in Applied Psychology, with an emphasis in Industrial/Organizational Psychology.<p>
-                    <p>Email: sarah.m.ruth.77@gmail.com</p>
+            </div>
+
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="card bg-secondary border-dark" style="padding: 10px; margin: 10px;">
+                        <div class="card-header">
+                            <h4 style="text-align: left;">Leon Harris</h4>
+                        </div>
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-md-1">
+                                    <img src="static/images/Leon.jpg" alt="Profile Picture" class="profile-pic" width="100" height="100"/>
+                                </div>
+                                <div class="col-md-11">
+                                    <p>
+                                        My name is Leon Harris, I'm a student in a data analytics bootcamp gaining experience with various technologies including HTML, CSS, and JavaScript.<br>
+                                        When I'm not coding, I enjoy family time, playing/watching sports, and I also love to travel.<br>
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-footer">
+                            <p>Email: harris.leon07@gmail.com</p>
+                        </div>
+                    </div>
                 </div>
-            </section>
-        </main>
-     <br/>
-     <br/>
+            </div>
+
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="card bg-secondary border-dark" style="padding: 10px; margin: 10px;">
+                        <div class="card-header">
+                            <h4 style="text-align: left;">Sarah Ruth</h4>
+                        </div>
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-md-1">
+                                    <img src="static/images/sarah_pic.jpg" alt="Profile Picture" class="profile-pic" width="100" height="100"/>
+                                </div>
+                                <div class="col-md-11">
+                                    <p>
+                                        My name is Sarah Ruth, and I'm a student in the Data Analytics Bootcamp. I have been learning new technologies including Python, HTML, CSS, and JavaScript.<br>
+                                        I enjoy socializing with my family/friends, swimming, traveling, and exploring different craft projects.<br>
+                                        I have a Master's Degree in Applied Psychology, with an emphasis in Industrial/Organizational Psychology.
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-footer">
+                            <p>Email: sarah.m.ruth.77@gmail.com</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
 </body>
 </html>
