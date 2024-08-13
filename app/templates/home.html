@@ -20,7 +20,7 @@
     <!-- NAVBAR -->
     <nav class="navbar navbar-expand-lg bg-primary" data-bs-theme="dark">
         <div class="container-fluid">
-            <a class="navbar-brand" href="/">Project 3</a>
+            <a class="navbar-brand" href="/"><img src="static/images/siteicon.png" alt="Entry Gate." class="img-fluid" style="max-width: 80px; max-height: 80px;"></a>
             <ul class="navbar-nav me-auto">
                 <li class="nav-item">
                     <a class="nav-link active" href="/">Home</a>
@@ -40,103 +40,81 @@
             </ul>
         </div>
     </nav>
-  
-    <!-- JS for Home Page -->
-    
-    <div class="row">
-        <div class="col-md-12">
-            <div class="card bg-secondary border-dark" style="padding: 20px; margin: 10px;">
-                <div class="card-header">
-                    <h2 style="text-align: center;">Border Crossing Entry Data</h2>
-                </div>
-                <div class="card-body">
-                    <div class="row">
-                        <div class="col-md-11">
-                            <p>
-                                Our team developed this website 
-                            </p>
-                        </div>
-                    </div>
-                </div>
-                <div class="card-footer" style="text-align: center;">
-                    <a href="https://data.bts.gov/Research-and-Statistics/Border-Crossing-Entry-Data/keg4-3bc2/data" target="_blank">
-                        https://data.bts.gov/Research-and-Statistics/Border-Crossing-Entry-Data/keg4-3bc2/data
-                    </a>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-md-12">
-            <div class="card bg-secondary border-dark" style="padding: 10px; margin: 10px;">
-                <div class="card-header">
-                    <h2 style="text-align: center;">Inspiration</h2>
-                </div>
-                <div class="card-body">
-                    <div class="row">
-                        <div class="col-md-11">
-                            <p>
-                            We discovered a dataset of "Border Crossing Entry Data" for people coming into the United States 
-                            from Mexico and Canada on the Kaggle Website. Upon further review, we found the original dataset
-                             on the U.S.Bureau of Transportation's website. The data collection was immense and included Latitude 
-                             and Longitude columns. This was important to us since we wanted to create a map-based visualization 
-                             of the data. 
-                            </p>
-                        </div>
-                    </div>
-                </div>
-                <!-- <div class="card-footer">
-                    <p>WHAT/WHY</p>
-                </div>
-            </div>
-        </div>
-    </div> -->
-    <div class="row">
-        <div class="col-md-12">
-            <div class="card bg-secondary border-dark" style="padding: 20px; margin: 10px;">
-                <div class="card-header">
-                    <h2 style="text-align: center;">Navigation</h2>
-                </div>
-                <div class="card-body">
-                    <div class="row">
-                        <div class="col-md-10" style="text-align: center;">
-                            <p>
-                              Please click on each page in the Navigation bar to view our Interactive <b>DASHBOARD</b>, </p>
-                              <p>Dynamic <b>MAP</b>, as well as our <b>ABOUT US</b> and <b>WORKS CITED</b> pages. 
-                              Thank you for visiting!
-                            </p>
-                        </div>
-                    </div>
-                </div>
-                <div class="card-footer">
-                    <p></p>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-md-12">
-            <div class="card bg-secondary border-dark" style="padding: 20px; margin: 10px;">
-                <div class="card-body">
-                    <div class="row justify-content-center">
-                        <div class="col-md-4 d-flex justify-content-center align-items-center">
-                            <img src="static/images/cars.jpg" alt="Profile Picture" class="img-fluid">
-                        </div>
-                        <div class="col-md-4 d-flex justify-content-center align-items-center">
-                            <img src="static/images/migrants.jpg" alt="Image 2" class="img-fluid">
-                        </div>
-                        <div class="col-md-4 d-flex justify-content-center align-items-center">
-                            <img src="static/images/border.jpg" alt="Image 3" class="img-fluid">
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    
-    
-    
 
-
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-6">
+                <div class="card bg-secondary border-dark" style="padding: 20px; margin: 10px; min-height: 20vh;">
+                    <div class="card-header">
+                        <h2 style="text-align: center;">Our Dataset</h2>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-10">
+                                <p>
+                                    We discovered this dataset titled "Border Crossing Entry Data" on the website "Kaggle.com".<br>
+                                    Upon further inspection, we found the original dataset on the U.S. Bureau of Transportation's website.<br>
+                                    This dataset covers all ports of entry in the U.S. under control of the U.S. government.<br>
+                                    Each row represents a mode of transportation encountered (or not encoutnered) during that month.<br>
+                                    Each row contains the port code, port name, state, latitude of the port, longitude of the port.<br>
+                                    As well as the mode of transportation, and the amount encountered.<br>
+                                </p>
+                            </div>
+                            <div class="col-md-2">
+                                <img src="static/images/migrants.jpg" alt="Migrants at a border." class="img-fluid">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-footer" style="text-align: center;">
+                        <a href="https://data.bts.gov/Research-and-Statistics/Border-Crossing-Entry-Data/keg4-3bc2/data" target="_blank">
+                            https://data.bts.gov/Research-and-Statistics/Border-Crossing-Entry-Data/keg4-3bc2/data
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="card bg-secondary border-dark" style="padding: 20px; margin: 10px; min-height: 20vh;">
+                    <div class="card-header">
+                        <h2 style="text-align: center;">Our Inspiration</h2>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-10">
+                                <p>
+                                    Our inspiration was to make an interactive dashboard where one could find summaries of the border crossing statistics.<br>
+                                    This reference can be used to explore research questions regarding border crossings in the U.S.<br>
+                                    We had a few research questions of our own:<br>
+                                    Has the overall traffic at U.S. ports of entry increased or decreased over time?<br>
+                                    Are these changes localized to specific ports or regions?<br>
+                                    What are the patterns and volumes of the various modes of transport at entry ports into the U.S.?
+                                </p>
+                            </div>
+                            <div class="col-md-2">
+                                <img src="static/images/cars.jpg" alt="Cars at a border highway." class="img-fluid">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12 d-flex justify-content-center">
+                <div class="card bg-secondary border-dark" style="padding: 10px; margin: 10px;">
+                    <div class="card-header">
+                        <h2 style="text-align: center;">Navigating The Site</h2>
+                    </div>
+                    <div class="card-body">
+                        <p>
+                            Please click on the page you would like to visit on the navigation bar at the top of the page.<br>
+                            We have an interactive <span class="badge bg-light">dashboard</span>, and an interactive <span class="badge bg-light">map</span>.<br>
+                            There is an <span class="badge bg-light">about us</span> page where you can learn more about our team.<br>
+                            We also have a <span class="badge bg-light">works cited</span> page where you can see all of the sources we used to create this project.<br>
+                            Thanks for visiting our site!
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </body>
 </html>
