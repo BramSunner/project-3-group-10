@@ -103,7 +103,7 @@ def requestData():
 
     data = sql.requestData(select = select, where = where, order = order, group = group, limit = limit)
 
-    return data
+    return jsonify(data)
 
 # ...
 
