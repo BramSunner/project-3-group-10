@@ -20,21 +20,19 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
     <script src="https://cdn.datatables.net/2.1.3/js/dataTables.min.js"></script>
     <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
-    
-
 </head>
 
 <body>
     <!-- NAVBAR -->
     <nav class="navbar navbar-expand-lg bg-primary" data-bs-theme="dark">
         <div class="container-fluid">
-            <a class="navbar-brand" href="/">Project 13</a>
+            <a class="navbar-brand" href="/">Project 3</a>
             <ul class="navbar-nav me-auto">
                 <li class="nav-item">
-                    <a class="nav-link" href="/">Home</a>
+                    <a class="nav-link active" href="/">Home</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link active" href="/dashboard">Dashboard</a>
+                    <a class="nav-link" href="/dashboard">Dashboard</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="/map">Map</a>
@@ -49,155 +47,76 @@
         </div>
     </nav>
 
-    <br/>
 
-    <!-- Dashboard -->
     <div class="container-fluid">
         <div class="row">
-            <div class="col-md-6">
-                <div class="card bg-dark">
-                    <div class="card-header text-center">
-                        <h4>
-                            <button type="button" id="btn-line-re" class="badge rounded-pill bg-secondary border-secondary btn-re">&#8635;</button>
-                            <span class="badge rounded-pill bg-light border-dark">Line Chart</span>
-                        </h4>
-                    </div>
-                    <div class="card-body bg-light text-center">
-                        <div class="chart-container">
-                            <div id="line-chart"></div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="col-md-6">
-                    <div class="card bg-dark">
-                        <div class="card-header text-center">
-                            <h4>
-                                <button type="button" id="btn-donut-re" class="badge rounded-pill bg-secondary border-secondary btn-re">&#8635;</button>
-                                <span class="badge rounded-pill bg-light border-dark">Donut Chart</span>
-                            </h4>
-                        </div>
-                        <div class="card-body bg-light text-center">
-                            <div class="chart-container">
-                                <div id="donut-chart"></div>
-                            </div>
-                        </div>
-                    </div>
-            </div>
-        </div>
-
-        <br>
-
-        <div class="row">
-            <div class="col-md-2">
-                <div class="card border-dark text-center card-filter">
-                    <div class="card-header bg-light">
-                        <h4>
-                            <span class="badge rounded-pill bg-light border-dark">Port Name</span>
-                        </h4>
-                        <p>
-                            <!-- <button type="button" id="btn-port_name-grp" class="badge rounded-pill btn-grp">&#9901;</button> -->
-                            <button type="button" id="btn-port_name-asc" class="badge rounded-pill btn-filter">&#8593;</button>
-                            <button type="button" id="btn-port_name-desc" class="badge rounded-pill btn-filter">&#8595;</button>
-                        </p>
-                    </div>
-                    <div class="card-body">
+            <div class="col-sm-1" style="padding: 0%;">
+                <ul id="filter-menu" class="nav nav-pills flex-column bg-dark">
+                    <li id="filter-menu-header" class="filter-item">
+                        <button type="button" id="filter-button" class="btn btn-dark">Filter</button>
+                    </li>
+                    <hr>
+                    <li class="filter-item">
+                        <h6>
+                            <span class="badge">Port Name</span>
+                            <button type="button" id="btn-port_name-asc" class="badge btn-filter">&#8593;</button>
+                            <button type="button" id="btn-port_name-desc" class="badge btn-filter">&#8595;</button>
+                        </h6>
                         <select id="filter-port_name" class="filter-sel">
                             <option selected>All</option>
                         </select>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-1">
-                <div class="card border-dark text-center card-filter">
-                    <div class="card-header bg-light">
-                        <h4>
-                            <span class="badge rounded-pill bg-light border-dark">State</span>
-                        </h4>
-                        <p>
-                            <!-- <button type="button" id="btn-state-grp" class="badge rounded-pill btn-grp">&#9901;</button> -->
-                            <button type="button" id="btn-state-asc" class="badge rounded-pill btn-filter">&#8593;</button>
-                            <button type="button" id="btn-state-desc" class="badge rounded-pill btn-filter">&#8595;</button>
-                        </p>
-                    </div>
-                    <div id="state-body" class="card-body">
+                    </li>
+                    <hr>
+                    <li class="filter-item">
+                        <h6>
+                            <span class="badge">State</span>
+                            <button type="button" id="btn-state-asc" class="badge btn-filter">&#8593;</button>
+                            <button type="button" id="btn-state-desc" class="badge btn-filter">&#8595;</button>
+                        </h6>
                         <select id="filter-state" class="filter-sel">
                             <option selected>All</option>
                         </select>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-1">
-                <div class="card border-dark text-center card-filter">
-                    <div class="card-header bg-light">
-                        <h4>
-                            <span class="badge rounded-pill bg-light border-dark">Port Code</span>
-                        </h4>
-                        <p>
-                            <!-- <button type="button" id="btn-port_code-grp" class="badge rounded-pill btn-grp">&#9901;</button> -->
-                            <button type="button" id="btn-port_code-asc" class="badge rounded-pill btn-filter">&#8593;</button>
-                            <button type="button" id="btn-port_code-desc" class="badge rounded-pill btn-filter">&#8595;</button>
-                        </p>
-                    </div>
-                    <div class="card-body border-dark text-center">
+                    </li>
+                    <hr>
+                    <li class="filter-item">
+                        <h6>
+                            <span class="badge">Port Code</span>
+                            <button type="button" id="btn-port_code-asc" class="badge btn-filter">&#8593;</button>
+                            <button type="button" id="btn-port_code-desc" class="badge btn-filter">&#8595;</button>
+                        </h6>
                         <select id="filter-port_code" class="filter-sel">
                             <option selected>All</option>
                         </select>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-1">
-                <div class="card border-dark text-center card-filter">
-                    <div class="card-header bg-light">
-                        <h4>
-                            <span class="badge rounded-pill bg-light border-dark">Border</span>
-                        </h4>
-                        <p>
-                            <!-- <button type="button" id="btn-border-grp" class="badge rounded-pill btn-grp">&#9901;</button> -->
-                            <button type="button" id="btn-border-asc" class="badge rounded-pill btn-filter">&#8593;</button>
-                            <button type="button" id="btn-border-desc" class="badge rounded-pill btn-filter">&#8595;</button>
-                        </p>
-                    </div>
-                    <div class="card-body border-dark text-center">
+                    </li>
+                    <hr>
+                    <li class="filter-item">
+                        <h6>
+                            <span class="badge">Border</span>
+                            <button type="button" id="btn-border-asc" class="badge btn-filter">&#8593;</button>
+                            <button type="button" id="btn-border-desc" class="badge btn-filter">&#8595;</button>
+                        </h6>
                         <select id="filter-border" class="filter-sel">
                             <option selected>All</option>
                         </select>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-2">
-                <div class="card border-dark text-center card-filter">
-                    <div class="card-header bg-light">
-                        <h4>
-                            <span class="badge rounded-pill bg-light border-dark">Measure</span>
-                        </h4>
-                        <p>
-                            <!-- <button type="button" id="btn-measure-grp" class="badge rounded-pill btn-grp">&#9901;</button> -->
-                            <button type="button" id="btn-measure-asc" class="badge rounded-pill btn-filter">&#8593;</button>
-                            <button type="button" id="btn-measure-desc" class="badge rounded-pill btn-filter">&#8595;</button>
-                        </p>
-                    </div>
-                    <div class="card-body">
+                    </li>
+                    <hr>
+                    <li class="filter-item">
+                        <h6>
+                            <span class="badge">Measure</span>
+                            <button type="button" id="btn-measure-asc" class="badge btn-filter">&#8593;</button>
+                            <button type="button" id="btn-measure-desc" class="badge btn-filter">&#8595;</button>
+                        </h6>
                         <select id="filter-measure" class="filter-sel">
                             <option selected>All</option>
                         </select>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-1">
-                <div class="card border-dark text-center card-filter">
-                    <div class="card-header bg-light">
-                        <h4>
-                            <span class="badge rounded-pill bg-light border-dark">Value</span>
-                        </h4>
-                        <p>
-                            <!-- <button type="button" id="btn-value-grp" class="badge rounded-pill btn-grp">&#9901;</button> -->
-                            <button type="button" id="btn-value-asc" class="badge rounded-pill btn-filter">&#8593;</button>
-                            <button type="button" id="btn-value-desc" class="badge rounded-pill btn-filter">&#8595;</button>
-                        </p>
-                    </div>
-                    <div class="card-body">
+                    </li>
+                    <hr>
+                    <li class="filter-item">
+                        <h6>
+                            <span class="badge">Value</span>
+                            <button type="button" id="btn-value-asc" class="badge btn-filter">&#8593;</button>
+                            <button type="button" id="btn-value-desc" class="badge btn-filter">&#8595;</button>
+                        </h6>
                         <select id="filter-value-cmp-1" class="filter-sel">
                             <option selected> </option>
                             <option>=</option>
@@ -206,7 +125,7 @@
                             <option>&lt;=</option>
                             <option>&lt;</option>
                         </select>
-                        <input id="filter-value-1" type="number" style="width: 100px">
+                        <input id="filter-value-1" class="filter-inp" type="number" style="width: 100px">
                         <br>
                         <select id="filter-value-cmp-2" class="filter-sel">
                             <option selected> </option>
@@ -216,23 +135,15 @@
                             <option>&lt;=</option>
                             <option>&lt;</option>
                         </select>
-                        <input id="filter-value-2" type="number" style="width: 100px">
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-1">
-                <div class="card border-dark text-center card-filter">
-                    <div class="card-header bg-light">
-                        <h4>
-                            <span class="badge rounded-pill bg-light border-dark">Month</span>
-                        </h4>
-                        <p>
-                            <!-- <button type="button" id="btn-month-grp" class="badge rounded-pill btn-grp">&#9901;</button> -->
-                            <button type="button" id="btn-month-asc" class="badge rounded-pill btn-filter">&#8593;</button>
-                            <button type="button" id="btn-month-desc" class="badge rounded-pill btn-filter">&#8595;</button>
-                        </p>
-                    </div>
-                    <div class="card-body">
+                        <input id="filter-value-2" class="filter-inp" type="number" style="width: 100px">
+                    </li>
+                    <hr>
+                    <li class="filter-item">
+                        <h6>
+                            <span class="badge">Month</span>
+                            <button type="button" id="btn-month-asc" class="badge btn-filter">&#8593;</button>
+                            <button type="button" id="btn-month-desc" class="badge btn-filter">&#8595;</button>
+                        </h6>
                         <select id="filter-month-cmp-1">
                             <option selected>=</option>
                             <option>&gt;=</option>
@@ -254,22 +165,14 @@
                         <select id="filter-month-2" class="filter-sel">
                             <option selected>All</option>
                         </select>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-1">
-                <div class="card border-dark text-center card-filter">
-                    <div class="card-header bg-light">
-                        <h4>
-                            <span class="badge rounded-pill bg-light border-dark">Year</span>
-                        </h4>
-                        <p>
-                            <!-- <button type="button" id="btn-year-grp" class="badge rounded-pill btn-grp">&#9901;</button> -->
-                            <button type="button" id="btn-year-asc" class="badge rounded-pill btn-filter">&#8593;</button>
-                            <button type="button" id="btn-year-desc" class="badge rounded-pill btn-filter">&#8595;</button>
-                        </p>
-                    </div>
-                    <div class="card-body">
+                    </li>
+                    <hr>
+                    <li class="filter-item">
+                        <h6>
+                            <span class="badge">Year</span>
+                            <button type="button" id="btn-year-asc" class="badge btn-filter">&#8593;</button>
+                            <button type="button" id="btn-year-desc" class="badge btn-filter">&#8595;</button>
+                        </h6>
                         <select id="filter-year-cmp-1">
                             <option selected>=</option>
                             <option>&gt;=</option>
@@ -291,22 +194,14 @@
                         <select id="filter-year-2" class="filter-sel">
                             <option selected>All</option>
                         </select>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-1">
-                <div class="card border-dark text-center card-filter">
-                    <div class="card-header bg-light">
-                        <h4>
-                            <span class="badge rounded-pill bg-light border-dark">Latitude</span>
-                        </h4>
-                        <p>
-                            <!-- <button type="button" id="btn-latitude-grp" class="badge rounded-pill btn-grp">&#9901;</button> -->
-                            <button type="button" id="btn-latitude-asc" class="badge rounded-pill btn-filter">&#8593;</button>
-                            <button type="button" id="btn-latitude-desc" class="badge rounded-pill btn-filter">&#8595;</button>
-                        </p>
-                    </div>
-                    <div class="card-body">
+                    </li>
+                    <hr>
+                    <li class="filter-item">
+                        <h6>
+                            <span class="badge">Latitude</span>
+                            <button type="button" id="btn-latitude-asc" class="badge btn-filter">&#8593;</button>
+                            <button type="button" id="btn-latitude-desc" class="badge btn-filter">&#8595;</button>
+                        </h6>
                         <select id="filter-latitude-cmp-1" class="filter-sel">
                             <option selected> </option>
                             <option>=</option>
@@ -315,7 +210,7 @@
                             <option>&lt;=</option>
                             <option>&lt;</option>
                         </select>
-                        <input id="filter-latitude-1" type="number" style="width: 100px">
+                        <input id="filter-latitude-1" class="filter-inp" type="number" style="width: 100px">
                         <br>
                         <select id="filter-latitude-cmp-2" class="filter-sel">
                             <option selected> </option>
@@ -325,23 +220,15 @@
                             <option>&lt;=</option>
                             <option>&lt;</option>
                         </select>
-                        <input id="filter-latitude-2" type="number" style="width: 100px">
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-1">
-                <div class="card border-dark text-center card-filter">
-                    <div class="card-header bg-light">
-                        <h4>
-                            <span class="badge rounded-pill bg-light border-dark">Longitude</span>
-                        </h4>
-                        <p>
-                            <!-- <button type="button" id="btn-longitude-grp" class="badge rounded-pill btn-grp">&#9901;</button> -->
-                            <button type="button" id="btn-longitude-asc" class="badge rounded-pill btn-filter">&#8593;</button>
-                            <button type="button" id="btn-longitude-desc" class="badge rounded-pill btn-filter">&#8595;</button>
-                        </p>
-                    </div>
-                    <div class="card-body">
+                        <input id="filter-latitude-2" class="filter-inp" type="number" style="width: 100px">
+                    </li>
+                    <hr>
+                    <li class="filter-item">
+                        <h6>
+                            <span class="badge">Longitude</span>
+                            <button type="button" id="btn-longitude-asc" class="badge btn-filter">&#8593;</button>
+                            <button type="button" id="btn-longitude-desc" class="badge btn-filter">&#8595;</button>
+                        </h6>
                         <select id="filter-longitude-cmp-1" class="filter-sel">
                             <option selected> </option>
                             <option>=</option>
@@ -350,7 +237,7 @@
                             <option>&lt;=</option>
                             <option>&lt;</option>
                         </select>
-                        <input id="filter-longitude-1" type="number" style="width: 100px">
+                        <input id="filter-longitude-1" class="filter-inp" type="number" style="width: 100px">
                         <br>
                         <select id="filter-longitude-cmp-2" class="filter-sel">
                             <option selected> </option>
@@ -360,7 +247,112 @@
                             <option>&lt;=</option>
                             <option>&lt;</option>
                         </select>
-                        <input id="filter-longitude-2" type="number" style="width: 100px">
+                        <input id="filter-longitude-2" class="filter-inp" type="number" style="width: 100px">
+                    </li>
+                    <hr>
+                </ul>
+            </div>
+            <div class="col-md-11">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="container text-left" style="margin:0px; padding:0px;">
+                            <div class="container bg-dark text-center" style="padding: 10px;">
+                                <h2>
+                                    <button type="button" id="btn-linechart-re" class="badge rounded-pill bg-secondary border-secondary btn-re">&#8635;</button>
+                                    <span class="badge bg-light border-dark">Crossing Measurements Over Time</span>
+                                </h2>
+                            </div>
+                            <div class="chart-container">
+                                <div id="line-chart"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="chart-container text-right" style="margin:0px; padding:0px;">
+                            <div class="container bg-dark text-center" style="padding: 10px;">
+                                <h2>
+                                    <button type="button" id="btn-donut-re" class="badge rounded-pill bg-secondary border-secondary btn-re">&#8635;</button>
+                                    <span class="badge bg-light border-dark">Distribution of Measure of Crossing</span>
+                                </h2>
+                            </div>
+                            <div id="donut-chart"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="card bg-dark" style="padding: 10px;">
+                            <div class="card-header text-center text-white">
+                                <h2>
+                                    <button type="button" id="btn-table-re" class="badge rounded-pill bg-secondary border-secondary btn-re">&#8635;</button>
+                                    <span class="badge bg-light border-dark">All Records</span>
+                                </h2>
+                            </div>
+                            <div class="card-body bg-light">
+                                <table id="table" class="table table-hover">
+                                    <thead>
+                                        <tr>
+                                            <th scope="col">
+                                                <h6>
+                                                    Row
+                                                </h6>
+                                            </th>
+                                            <th scope="col">
+                                                <h6>
+                                                    Port Name
+                                                </h6>
+                                            </th>
+                                            <th scope="col">
+                                                <h6>
+                                                    State
+                                                </h6>
+                                            </th>
+                                            <th scope="col">
+                                                <h6>
+                                                    Port Code
+                                                </h6>
+                                            </th>
+                                            <th scope="col">
+                                                <h6>
+                                                    Border
+                                                </h6>
+                                            </th>
+                                            <th scope="col">
+                                                <h6>
+                                                    Measure
+                                                </h6>
+                                            </th>
+                                            <th scope="col">
+                                                <h6>
+                                                    Value
+                                                </h6>
+                                            </th>
+                                            <th scope="col">
+                                                <h6>
+                                                    Month
+                                                </h6>
+                                            </th>
+                                            <th scope="col">
+                                                <h6>
+                                                    Year
+                                                </h6>
+                                            </th>
+                                            <th scope="col">
+                                                <h6>
+                                                    Latitude
+                                                </h6>
+                                            </th>
+                                            <th scope="col">
+                                                <h6>
+                                                    Longitude
+                                                </h6>
+                                            </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="table-body"></tbody>
+                                </table>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -369,77 +361,22 @@
 
 
 
-        </div>
 
-        <br>
 
-        <div class="row">
-            <div class="col-md-12">
-                <table id="table" class="table table-hover">
-                    <thead>
-                        <tr>
-                            <th scope="col" class="bg-dark">
-                                <h4>
-                                    <button type="button" id="btn-table-re" class="badge rounded-pill bg-secondary border-secondary btn-re">&#8635;</button>
-                                </h4>
-                            </th>
-                            <th scope="col" class="bg-dark">
-                                <h4>
-                                    <span class="badge rounded-pill bg-light border-dark">Port Name</span>
-                                </h4>
-                            </th>
-                            <th scope="col" class="bg-dark">
-                                <h4>
-                                    <span class="badge rounded-pill bg-light border-dark">State</span>
-                                </h4>
-                            </th>
-                            <th scope="col" class="bg-dark">
-                                <h4>
-                                    <span class="badge rounded-pill bg-light border-dark">Port Code</span>
-                                </h4>
-                            </th>
-                            <th scope="col" class="bg-dark">
-                                <h4>
-                                    <span class="badge rounded-pill bg-light border-dark">Border</span>
-                                </h4>
-                            </th>
-                            <th scope="col" class="bg-dark">
-                                <h4>
-                                    <span class="badge rounded-pill bg-light border-dark">Measure</span>
-                                </h4>
-                            </th>
-                            <th scope="col" class="bg-dark">
-                                <h4>
-                                    <span class="badge rounded-pill bg-light border-dark">Value</span>
-                                </h4>
-                            </th>
-                            <th scope="col" class="bg-dark">
-                                <h4>
-                                    <span class="badge rounded-pill bg-light border-dark">Month</span>
-                                </h4>
-                            </th>
-                            <th scope="col" class="bg-dark">
-                                <h4>
-                                    <span class="badge rounded-pill bg-light border-dark">Year</span>
-                                </h4>
-                            </th>
-                            <th scope="col" class="bg-dark">
-                                <h4>
-                                    <span class="badge rounded-pill bg-light border-dark">Latitude</span>
-                                </h4>
-                            </th>
-                            <th scope="col" class="bg-dark">
-                                <h4>
-                                    <span class="badge rounded-pill bg-light border-dark">Longitude</span>
-                                </h4>
-                            </th>
-                        </tr>
-                    </thead>
-                    <tbody id="table-body"></tbody>
-                </table>
-            </div>
-        </div>
+
+
+
+
+
     </div>
+            
+       
+           
+            
+            
+           
+           
+        
     <script src="./static/js/dashboard.js"></script>
 </body>
 </html>
@@ -449,7 +386,7 @@
             <div class="col-md-2">
                 <div class="card">
                     <div class="card-header bg-light">
-                        <span class="badge rounded-pill bg-light border-dark">Port Name</span>
+                        <span class="badge bg-light border-dark">Port Name</span>
                     </div>
                     <div id="name-body" class="card-body">
                         <select id="name-filter">
@@ -461,7 +398,7 @@
             <div class="col-md-1">
                 <div class="card">
                     <div class="card-header bg-light">
-                        <span class="badge rounded-pill bg-light border-dark">State</span>
+                        <span class="badge bg-light border-dark">State</span>
                     </div>
                     <div id="state-body" class="card-body">
                         <select id="state-filter">
@@ -473,7 +410,7 @@
             <div class="col-md-1">
                 <div class="card">
                     <div class="card-header bg-light">
-                        <span class="badge rounded-pill bg-light border-dark">Port Code</span>
+                        <span class="badge bg-light border-dark">Port Code</span>
                     </div>
                     <div id="code-body" class="card-body">
                         <select id="code-filter">
@@ -485,7 +422,7 @@
             <div class="col-md-1">
                 <div class="card">
                     <div class="card-header bg-light">
-                        <span class="badge rounded-pill bg-light border-dark">Border</span>
+                        <span class="badge bg-light border-dark">Border</span>
                     </div>
                     <div id="border-body" class="card-body">
                         <select id="border-filter">
@@ -497,7 +434,7 @@
             <div class="col-md-2">
                 <div class="card">
                     <div class="card-header bg-light">
-                        <span class="badge rounded-pill bg-light border-dark">Measure</span>
+                        <span class="badge bg-light border-dark">Measure</span>
                     </div>
                     <div id="measure-body" class="card-body">
                         <select id="measure-filter">
@@ -509,7 +446,7 @@
             <div class="col-md-1">
                 <div class="card">
                     <div class="card-header bg-light">
-                        <span class="badge rounded-pill bg-light border-dark">Value</span>
+                        <span class="badge bg-light border-dark">Value</span>
                     </div>
                     <div id="value-body" class="card-body">
                         <select id="value-comparison">
@@ -520,14 +457,14 @@
                             <option>&lt;=</option>
                             <option>&lt;</option>
                         </select>
-                        <input id="value-filter" type="number" style="width: 100px">
+                        <input id="value-filter" class="filter-inp" type="number" style="width: 100px">
                     </div>
                 </div>
             </div>
             <div class="col-md-1">
                 <div class="card">
                     <div class="card-header bg-light">
-                        <span class="badge rounded-pill bg-light border-dark">Latitude</span>
+                        <span class="badge bg-light border-dark">Latitude</span>
                     </div>
                     <div id="lat-body" class="card-body">
                         <select id="lat-comparison">
@@ -538,14 +475,14 @@
                             <option>&lt;=</option>
                             <option>&lt;</option>
                         </select>
-                        <input id="lat-filter" type="number" style="width: 100px">
+                        <input id="lat-filter" class="filter-inp" type="number" style="width: 100px">
                     </div>
                 </div>
             </div>
             <div class="col-md-1">
                 <div class="card">
                     <div class="card-header bg-light">
-                        <span class="badge rounded-pill bg-light border-dark">Longitude</span>
+                        <span class="badge bg-light border-dark">Longitude</span>
                     </div>
                     <div id="lng-body" class="card-body">
                         <select id="lng-comparison">
@@ -556,14 +493,14 @@
                             <option>&lt;=</option>
                             <option>&lt;</option>
                         </select>
-                        <input id="lng-filter" type="number" style="width: 100px">
+                        <input id="lng-filter" class="filter-inp" type="number" style="width: 100px">
                     </div>
                 </div>
             </div>
             <div class="col-md-1">
                 <div class="card">
                     <div class="card-header bg-light">
-                        <span class="badge rounded-pill bg-light border-dark">Month</span>
+                        <span class="badge bg-light border-dark">Month</span>
                     </div>
                     <div id="month-body" class="card-body">
                         <select id="month-comparison">
@@ -582,7 +519,7 @@
             <div class="col-md-1">
                 <div class="card">
                     <div class="card-header bg-light">
-                        <span class="badge rounded-pill bg-light border-dark">Year</span>
+                        <span class="badge bg-light border-dark">Year</span>
                     </div>
                     <div id="year-body" class="card-body">
                         <select id="year-comparison">
@@ -606,10 +543,10 @@
             <div class="col-md-12">
                 <div class="card bg-dark">
                     <div class="card-header text-center">
-                        <h4>
-                            <button type="button" id="btn-table-re" class="badge rounded-pill bg-secondary border-secondary btn-re">&#8635;</button>
-                            <span class="badge rounded-pill bg-light border-dark">Transportation Table</span>
-                        </h4>
+                        <h6>
+                            <button type="button" id="btn-table-re" class="badge bg-secondary border-secondary btn-re">&#8635;</button>
+                            <span class="badge bg-light border-dark">Transportation Table</span>
+                        </h6>
                     </div>
                     <div class="card-body bg-light">
                         <div class="scrollable-table">
@@ -617,37 +554,37 @@
                                 <thead style="background-color: transparent;">
                                     <tr style="color: black;">
                                         <th scope="col" class="bg-dark">
-                                            <span class="badge rounded-pill bg-light border-dark">Index</span>
+                                            <span class="badge bg-light border-dark">Index</span>
                                         </th>
                                         <th scope="col" class="bg-dark">
-                                            <span class="badge rounded-pill bg-light border-dark">Port Name</span>
+                                            <span class="badge bg-light border-dark">Port Name</span>
                                         </th>
                                         <th scope="col" class="bg-dark">
-                                            <span class="badge rounded-pill bg-light border-dark">State</span>
+                                            <span class="badge bg-light border-dark">State</span>
                                         </th>
                                         <th scope="col" class="bg-dark">
-                                            <span class="badge rounded-pill bg-light border-dark">Port Code</span>
+                                            <span class="badge bg-light border-dark">Port Code</span>
                                         </th>
                                         <th scope="col" class="bg-dark">
-                                            <span class="badge rounded-pill bg-light border-dark">Border</span>
+                                            <span class="badge bg-light border-dark">Border</span>
                                         </th>
                                         <th scope="col" class="bg-dark">
-                                            <span class="badge rounded-pill bg-light border-dark">Measure</span>
+                                            <span class="badge bg-light border-dark">Measure</span>
                                         </th>
                                         <th scope="col" class="bg-dark">
-                                            <span class="badge rounded-pill bg-light border-dark">Value</span>
+                                            <span class="badge bg-light border-dark">Value</span>
                                         </th>
                                         <th scope="col" class="bg-dark">
-                                            <span class="badge rounded-pill bg-light border-dark">Month</span>
+                                            <span class="badge bg-light border-dark">Month</span>
                                         </th>
                                         <th scope="col" class="bg-dark">
-                                            <span class="badge rounded-pill bg-light border-dark">Year</span>
+                                            <span class="badge bg-light border-dark">Year</span>
                                         </th>
                                         <th scope="col" class="bg-dark">
-                                            <span class="badge rounded-pill bg-light border-dark">Latitude</span>
+                                            <span class="badge bg-light border-dark">Latitude</span>
                                         </th>
                                         <th scope="col" class="bg-dark">
-                                            <span class="badge rounded-pill bg-light border-dark">Longitude</span>
+                                            <span class="badge bg-light border-dark">Longitude</span>
                                         </th>
                                     </tr>
                                 </thead>

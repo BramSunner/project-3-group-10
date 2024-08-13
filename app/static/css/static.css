@@ -25,7 +25,7 @@
 }
 
 .btn-filter {
-    font-size: medium;
+    font-size: smaller;
     color: #000000;
     background-color: white;
     border-color: #000000;
@@ -42,6 +42,9 @@
 }
 
 #filter-menu-header {
+    position:sticky;
+    top:0;
+    left:0;
     text-align: center;
     margin-top: 15px;
     margin-bottom: 10px;
@@ -52,36 +55,56 @@
 }
 
 .filter-item {
-    padding-left: 10px;
+    max-width: 15.6vh;
+    min-width: fit-content;
+
+    padding-left: 20px;
     padding-right: 10px;
-    position: fixed;
+    padding-top: 0px;
+    padding-bottom: 0px;
+
+    position: sticky;
     top:0;
     left:0;
 }
 
-#filter-menu-filler {
-    min-height: 0;
-    flex-grow: 1;
+.filter-sel {
+    max-width: 10vh;
+    min-width: 10vh;
+    max-height: 20px;
 }
+
+.filter-inp {
+    max-height: 20px;
+}
+
+/* Charts */
+
+.chart-container {
+    min-width: 80vh;
+}
+
+#line-chart {
+    min-width: 80vh;
+}
+
+#donut-chart {
+    min-width: 80vh;
+}
+
 
 /* Table */
 
 table {
     border: 1px solid #000000;
-
 }
 
 table th {
     text-align: center;
-    max-width: fit-content;
-    font-weight: 200;
-    position: sticky;
-    top: 0;
 }
 
 table td {
     border: 1px solid #000000;
-    max-width: fit-content;
 }
 
 /*  Note: commented out because the functionality didn't work as intended.

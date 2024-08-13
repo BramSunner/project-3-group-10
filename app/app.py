@@ -32,10 +32,6 @@ def home():
 def dashboard():
     return render_template("dashboard.html")
 
-@app.route("/dashboard2")
-def dashboard2():
-    return render_template("dashboard2.html")
-
 # Map.
 @app.route("/map")
 def map():

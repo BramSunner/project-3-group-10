@@ -107,6 +107,8 @@ function setButtons() {
         .on("mouseover", event => event.target.style.backgroundColor = "white")
         .on("mouseout", event => event.target.style.backgroundColor = "transparent");
 
+    d3.select("#filter-button")
+        .on("click", updateAll);
 
     // Group Buttons.
     // Note: commented out because the functionality didn't work as intended.
@@ -296,21 +298,32 @@ function filterData(type = "none") {
     }
     
     // Add Line Chart in. ************************************************************************************************ <-------------------------------------------
-    if (type === "line") {}
-
-    if (type === "donut") {
+    if (type === "line") {
         if ((clauses != undefined) && (clauses.length != 0)) {
             let phrase = "";
-            console.log("CLAUSES");
-            console.log(clauses);
             for (let i = 0; i < clauses.length; i+=2) {
                 if (clauses[i] === "where") {
                     phrase += `&${clauses[i]}=${clauses[i+1]}`;
                 }
             }
 
-            console.log("DONUT");
-            console.log(phrase);
+            return `/api/v1.0/requestData` +
+                `?select=measure,value,month` +
+                phrase;
+        } else {
+            return `/api/v1.0/requestData` +
+                `?select=measure,value,month`;
+        }
+    }
+
+    if (type === "donut") {
+        if ((clauses != undefined) && (clauses.length != 0)) {
+            let phrase = "";
+            for (let i = 0; i < clauses.length; i+=2) {
+                if (clauses[i] === "where") {
+                    phrase += `&${clauses[i]}=${clauses[i+1]}`;
+                }
+            }
 
             return `/api/v1.0/requestData` +
                 `?select=measure,SUM(value) AS 'value'` +
@@ -328,13 +341,9 @@ function filterData(type = "none") {
     if (type === "table") {
         if ((clauses != undefined) && (clauses.length != 0)) {
             let phrase = "";
-
             for (let i = 0; i < clauses.length; i+=2) {
                 phrase += `&${clauses[i]}=${clauses[i+1]}`;
             }
-
-            console.log("TABLE");
-            console.log(phrase);
 
             return `/api/v1.0/requestData` +
                 `?limit=10000` +
@@ -490,13 +499,13 @@ function renderLineChart(data) {
     line_data = [tr1,tr2,tr3,tr4,tr5,tr6,tr7,tr8,tr9,tr10,tr11,tr12]
     
     let layout = {
-        title: 'All Crossing Measurements by Year and Month',
-        width: 600,
-        height: 1000
+        title: '',
+        height: 1000,
+        xaxis: {title: 'Month'},
+        // yaxis: {title: 'Count'}
     };
 
     Plotly.newPlot('line-chart', line_data, layout);
-    
 }
 
 function renderDonutChart(data) {
@@ -544,7 +553,7 @@ function renderDonutChart(data) {
     
     let layout = {
         title: '',
-        height: 800,
+        height: 1000,
         showlegend: false,
         grid: {rows: 1, columns: 1}
     };
@@ -555,13 +564,15 @@ function renderDonutChart(data) {
 
 // Table Visualization.
 function renderTable(data) {
+    // Clear previous information.
+    $('#table').DataTable().clear().destroy();
     let body = d3.select("#table-body").html("");
 
     for (i = 0; i < data.length; i++) {
         row = data[i];
 
         let tr = body.append("tr")
-            .attr("class", (((i % 2) === 0) ? "table-active" : "table-secondary"));
+            .attr("class", "table-light");
 
         tr.append("td").text(i);
         tr.append("td").text(row["port_name"]);
@@ -576,15 +587,18 @@ function renderTable(data) {
         tr.append("td").text(row["longitude"]);
     }
 
-    // DataTables.
-    let table = new DataTable('#table', {
-        // option
-    });
+    // DataTable.
+    $('#table').DataTable();
 }
 
 // Update Visualizations.
 // Calls filterData for API request.
 // Renders visualiation using that data.
+function updateAll() {
+    updateLineChart();
+    updateDonutChart();
+    updateTable();
+}
 function updateLineChart() {
     d3.json(filterData(type = "line")).then(data => renderLineChart(data));
 }
